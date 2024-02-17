@@ -17,7 +17,8 @@
       <pubDate>Sat, 17 Feb 2024 17:59:19 +0100</pubDate>
       
       <guid>https://cyberroute.github.io/post/mypost/</guid>
-      <description>Some content</description>
+      <description>Some content
+func NewDatabase(dsn string) (*sql.DB, error) { db, err := sql.Open(&amp;#34;pgx&amp;#34;, dsn) if err != nil { return nil, err } if err = db.Ping(); err != nil { return nil, err } return db, nil } </description>
     </item>
     
   </channel>
