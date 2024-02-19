@@ -8,9 +8,6 @@
     <language>en-us</language>
     <managingEditor>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</managingEditor>
     <webMaster>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</webMaster>
-    
-	<atom:link href="https://cyberroute.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <atom:link href="https://cyberroute.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

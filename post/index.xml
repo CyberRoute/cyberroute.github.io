@@ -9,19 +9,13 @@
     <managingEditor>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</managingEditor>
     <webMaster>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</webMaster>
     <lastBuildDate>Sat, 17 Feb 2024 17:59:19 +0100</lastBuildDate>
-    
-	<atom:link href="https://cyberroute.github.io/post/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <atom:link href="https://cyberroute.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mypost</title>
       <link>https://cyberroute.github.io/post/mypost/</link>
-      <pubDate>Sat, 17 Feb 2024 17:59:19 +0100</pubDate>
-      <author>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</author>
+      <pubDate>Sat, 17 Feb 2024 17:59:19 +0100</pubDate><author>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</author>
       <guid>https://cyberroute.github.io/post/mypost/</guid>
-      <description>Some content
-func NewDatabase(dsn string) (*sql.DB, error) { db, err := sql.Open(&amp;#34;pgx&amp;#34;, dsn) if err != nil { return nil, err } if err = db.Ping(); err != nil { return nil, err } return db, nil } </description>
+      <description>Some content&#xA;func NewDatabase(dsn string) (*sql.DB, error) { db, err := sql.Open(&amp;#34;pgx&amp;#34;, dsn) if err != nil { return nil, err } if err = db.Ping(); err != nil { return nil, err } return db, nil } </description>
     </item>
-    
   </channel>
 </rss>

@@ -9,30 +9,20 @@
     <managingEditor>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</managingEditor>
     <webMaster>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</webMaster>
     <lastBuildDate>Sat, 17 Feb 2024 17:59:19 +0100</lastBuildDate>
-    
-	<atom:link href="https://cyberroute.github.io/index.xml" rel="self" type="application/rss+xml" />
-    
-    
+    <atom:link href="https://cyberroute.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mypost</title>
       <link>https://cyberroute.github.io/post/mypost/</link>
-      <pubDate>Sat, 17 Feb 2024 17:59:19 +0100</pubDate>
-      <author>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</author>
+      <pubDate>Sat, 17 Feb 2024 17:59:19 +0100</pubDate><author>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</author>
       <guid>https://cyberroute.github.io/post/mypost/</guid>
-      <description>Some content
-func NewDatabase(dsn string) (*sql.DB, error) { db, err := sql.Open(&amp;#34;pgx&amp;#34;, dsn) if err != nil { return nil, err } if err = db.Ping(); err != nil { return nil, err } return db, nil } </description>
+      <description>Some content&#xA;func NewDatabase(dsn string) (*sql.DB, error) { db, err := sql.Open(&amp;#34;pgx&amp;#34;, dsn) if err != nil { return nil, err } if err = db.Ping(); err != nil { return nil, err } return db, nil } </description>
     </item>
-    
     <item>
       <title>About me</title>
       <link>https://cyberroute.github.io/page/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <author>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</author>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><author>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</author>
       <guid>https://cyberroute.github.io/page/about/</guid>
-      <description>Welcome to Alessandro&amp;rsquo;s Blog, your go-to resource for insights, tips, and discussions on cybersecurity, identity automation, and core production code.
-Security Engineer with a wealth of experience gained from working in globally distributed companies. With a passion for coding, open-source, hacking and music&amp;hellip;
-Thank you for visiting, and welcome to my blog!</description>
+      <description>Welcome to Alessandro&amp;rsquo;s Blog, your go-to resource for insights, tips, and discussions on cybersecurity, identity automation, and core production code.&#xA;Security Engineer with a wealth of experience gained from working in globally distributed companies. With a passion for coding, open-source, hacking and music&amp;hellip;&#xA;Thank you for visiting, and welcome to my blog!</description>
     </item>
-    
   </channel>
 </rss>
