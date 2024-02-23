@@ -8,14 +8,14 @@
     <language>en-us</language>
     <managingEditor>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</managingEditor>
     <webMaster>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</webMaster>
-    <lastBuildDate>Sat, 17 Feb 2024 17:59:19 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 23 Feb 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://cyberroute.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Mypost</title>
-      <link>https://cyberroute.github.io/post/mypost/</link>
-      <pubDate>Sat, 17 Feb 2024 17:59:19 +0100</pubDate><author>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</author>
-      <guid>https://cyberroute.github.io/post/mypost/</guid>
-      <description>Some content&#xA;func NewDatabase(dsn string) (*sql.DB, error) { db, err := sql.Open(&amp;#34;pgx&amp;#34;, dsn) if err != nil { return nil, err } if err = db.Ping(); err != nil { return nil, err } return db, nil } </description>
+      <title>Wannabe Security Researcher!?!?</title>
+      <link>https://cyberroute.github.io/post/2024-02-23-rdpscan/</link>
+      <pubDate>Fri, 23 Feb 2024 00:00:00 +0000</pubDate><author>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</author>
+      <guid>https://cyberroute.github.io/post/2024-02-23-rdpscan/</guid>
+      <description>This is the very first article that I am publishing on this blog, I wanted to share this experience with folks that are passionate like myself about Security at 360 degrees and also share my thought process to actually produce the correct solution. The assignment received has been pretty interesting and at the same time challenging given that I consider myself a wannabe Security Researcher :D. Without further ado, let&amp;rsquo;s get into it!</description>
     </item>
   </channel>
 </rss>

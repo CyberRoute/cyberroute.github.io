@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>Wannabe Security Researcher!?!? - </title>
+
+  <meta name="description" content="This is the very first article that I am publishing on this blog, I wanted to share this experience with folks that are passionate like myself about Security at 360 degrees and also share my thought process to actually produce the correct solution. The assignment received has been pretty interesting and at the same time challenging given that I consider myself a wannabe Security Researcher :D. Without further ado, let&rsquo;s get into it!">
+  <meta name="author" content="Alessandro Bresciani"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Blog",
+    
+    "url": "https:\/\/cyberroute.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/cyberroute.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/cyberroute.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/cyberroute.github.io\/post\/2024-02-23-rdpscan\/",
+          "name": "Wannabe security researcher!?!?"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Alessandro Bresciani"
+  },
+  "headline": "Wannabe Security Researcher!?!?",
+  "description" : "This is the very first article that I am publishing on this blog, I wanted to share this experience with folks that are passionate like myself about Security at 360 degrees and also share my thought process to actually produce the correct solution. The assignment received has been pretty interesting and at the same time challenging given that I consider myself a wannabe Security Researcher :D. Without further ado, let\u0026rsquo;s get into it!",
+  "inLanguage" : "en",
+  "wordCount":  1882 ,
+  "datePublished" : "2024-02-23T00:00:00",
+  "dateModified" : "2024-02-23T00:00:00",
+  "image" : "https:\/\/cyberroute.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https:\/\/cyberroute.github.io\/post\/2024-02-23-rdpscan\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/cyberroute.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/cyberroute.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Wannabe Security Researcher!?!?" />
+<meta property="og:description" content="This is the very first article that I am publishing on this blog, I wanted to share this experience with folks that are passionate like myself about Security at 360 degrees and also share my thought process to actually produce the correct solution. The assignment received has been pretty interesting and at the same time challenging given that I consider myself a wannabe Security Researcher :D. Without further ado, let&rsquo;s get into it!">
+<meta property="og:image" content="https://cyberroute.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://cyberroute.github.io/post/2024-02-23-rdpscan/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Blog" />
+
+  <meta name="twitter:title" content="Wannabe Security Researcher!?!?" />
+  <meta name="twitter:description" content="This is the very first article that I am publishing on this blog, I wanted to share this experience with folks that are passionate like myself about Security at 360 degrees and also share my thought …">
+  <meta name="twitter:image" content="https://cyberroute.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Cyber_Route" />
+  <meta name="twitter:creator" content="@Cyber_Route" />
+  <link href='https://cyberroute.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.122.0">
+  <link rel="alternate" href="https://cyberroute.github.io/index.xml" type="application/rss+xml" title="Blog"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://cyberroute.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://cyberroute.github.io/css/syntax.css" /><link rel="stylesheet" href="https://cyberroute.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://cyberroute.github.io/">Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">Projects</a>
+              <div class="navlinks-children">
+                
+                  <a href="/#">Sample 1</a>
+                
+                  <a href="/#">Sample 2</a>
+                
+                  <a href="/#">Sample 3</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Blog" href="https://cyberroute.github.io/">
+            <img class="avatar-img" src="https://cyberroute.github.io/img/avatar-icon.png" alt="Blog" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+
+  <header class="header-section ">
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>Wannabe Security Researcher!?!?</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on February 23, 2024
+  
+  
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Alessandro Bresciani
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <p>This is the very first article that I am publishing on this blog, I wanted to share this experience with folks that are passionate like myself about Security at 360 degrees and also share my thought process to actually produce the correct solution. The assignment received has been pretty interesting and at the same time challenging given that I consider myself a wannabe Security Researcher :D. Without further ado, let&rsquo;s get into it!</p>
+<h1 id="assignment-background">Assignment background</h1>
+<p>Implement a passive RDP data extractor whose goal is giving an IP &amp; port the script will try to initiate an RDP connection to the service in order to extract as much data as possible about the service without being blocked/blacklisted.</p>
+<h2 id="tasks">Tasks</h2>
+<ol>
+<li>Write a python script name rdp_extractor.py that take the following argument: a. ip_address - the ip address to be scan b. port - the scanning port c. output_file - output_file path The script will try to initiate a RDP handshake against the RDP service at the given ip-port and extract as much data as possible about the service (such as banner, SSL data &amp; NTLM) and save all the data in the output file.</li>
+<li>Is there a way to find out the operating system (Windows, Linux etc) and the OS version of the service?</li>
+<li>We want to capture a screenshot of the RDP login screen - can you come up with a plan how we can achieve that?</li>
+<li>[Bonus Question] Create a list of CVE that are related to the RDP service vulnerabilities and suggest ways to assign them based on your script result.</li>
+</ol>
+<h2 id="note">Note</h2>
+<ol>
+<li>For developing the script you can run linux RDP on docker using the <a href="https://hub.docker.com/r/scottyhardy/docker-remote-desktop">following instruction</a> and you can try to find an open service online.</li>
+<li>You can only use any python package for the script.</li>
+<li>You are only allowed to do passive calls, Do not try to log in using active methods.</li>
+<li>You have a maximum of 2 days to submit the assignment. (Don’t worry if you didn’t finish all the tasks - that&rsquo;s OK).</li>
+</ol>
+<p>Ok ok!!! That&rsquo;s interesting!!! Very interesting, considering that at the time I got this I hadn&rsquo;t touched Windows in ages and RDP. Remote Desktop Protocol is a <a href="https://en.wikipedia.org/wiki/Remote_Desktop_Protocol">proprietary protocol developed by Microsoft Corporation&hellip;</a> not really something I have spent time on in the last decade.
+After giving the very first read to the whole doc I started to think to the steps I should take to have the faster solution in the shortest amount of time, after all these type of assignments want to assess critical thinking, speed and thought process (not necessarily the A solution, right?).</p>
+<p>First thing first on an exercise like this you want to have quickly a functioning testing environment, hence I boostrapped the Docker container that would provide me a running local RDP service:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>alessandro<span style="color:#a6e22e">@xps</span>:<span style="color:#f92672">~/</span>Development<span style="color:#f92672">/</span>blog<span style="color:#960050;background-color:#1e0010">$</span> docker run <span style="color:#f92672">-</span>it \
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span>     <span style="color:#f92672">--</span>rm \
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span>     <span style="color:#f92672">--</span>hostname<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;$(hostname)&#34;</span> \
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span>     <span style="color:#f92672">--</span>publish<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;3389:3389/tcp&#34;</span> \
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span>     <span style="color:#f92672">--</span>name<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;remote-desktop&#34;</span> \
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;</span>     scottyhardy<span style="color:#f92672">/</span>docker<span style="color:#f92672">-</span>remote<span style="color:#f92672">-</span>desktop:latest <span style="color:#f92672">/</span>bin<span style="color:#f92672">/</span>bash
+</span></span><span style="display:flex;"><span>xrdp<span style="color:#f92672">-</span>sesman[<span style="color:#ae81ff">30</span>]: (<span style="color:#ae81ff">30</span>)(<span style="color:#ae81ff">139881464239680</span>)[DEBUG] libscp initialized
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>xrdp<span style="color:#f92672">-</span>sesman[<span style="color:#ae81ff">30</span>]: (<span style="color:#ae81ff">30</span>)(<span style="color:#ae81ff">139881464239680</span>)[DEBUG] Testing <span style="color:#66d9ef">if</span> xrdp<span style="color:#f92672">-</span>sesman can listen on <span style="color:#ae81ff">127.0.0.1</span> port <span style="color:#ae81ff">3350.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>xrdp<span style="color:#f92672">-</span>sesman[<span style="color:#ae81ff">30</span>]: (<span style="color:#ae81ff">30</span>)(<span style="color:#ae81ff">139881464239680</span>)[DEBUG] Closed socket <span style="color:#ae81ff">4</span> (AF_INET6 ::ffff:<span style="color:#ae81ff">127.0.0.1</span> port <span style="color:#ae81ff">3350</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>xrdp<span style="color:#f92672">-</span>sesman[<span style="color:#ae81ff">31</span>]: (<span style="color:#ae81ff">31</span>)(<span style="color:#ae81ff">139881464239680</span>)[INFO ] starting xrdp<span style="color:#f92672">-</span>sesman <span style="color:#66d9ef">with</span> pid <span style="color:#ae81ff">31</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>xrdp<span style="color:#f92672">-</span>sesman[<span style="color:#ae81ff">31</span>]: (<span style="color:#ae81ff">31</span>)(<span style="color:#ae81ff">139881464239680</span>)[INFO ] listening to port <span style="color:#ae81ff">3350</span> on <span style="color:#ae81ff">127.0.0.1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>xrdp[<span style="color:#ae81ff">32</span>]: (<span style="color:#ae81ff">32</span>)(<span style="color:#ae81ff">140630472390464</span>)[INFO ] address [<span style="color:#ae81ff">0.0.0.0</span>] port [<span style="color:#ae81ff">3389</span>] mode <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">20240223</span><span style="color:#f92672">-</span><span style="color:#ae81ff">14</span>:<span style="color:#ae81ff">15</span>:<span style="color:#ae81ff">39</span>] [INFO ] address [<span style="color:#ae81ff">0.0.0.0</span>] port [<span style="color:#ae81ff">3389</span>] mode <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>xrdp[<span style="color:#ae81ff">32</span>]: (<span style="color:#ae81ff">32</span>)(<span style="color:#ae81ff">140630472390464</span>)[INFO ] listening to port <span style="color:#ae81ff">3389</span> on <span style="color:#ae81ff">0.0.0.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">20240223</span><span style="color:#f92672">-</span><span style="color:#ae81ff">14</span>:<span style="color:#ae81ff">15</span>:<span style="color:#ae81ff">39</span>] [INFO ] listening to port <span style="color:#ae81ff">3389</span> on <span style="color:#ae81ff">0.0.0.0</span>
+</span></span><span style="display:flex;"><span>xrdp[<span style="color:#ae81ff">32</span>]: (<span style="color:#ae81ff">32</span>)(<span style="color:#ae81ff">140630472390464</span>)[INFO ] xrdp_listen_pp done
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">20240223</span><span style="color:#f92672">-</span><span style="color:#ae81ff">14</span>:<span style="color:#ae81ff">15</span>:<span style="color:#ae81ff">39</span>] [INFO ] xrdp_listen_pp done
+</span></span><span style="display:flex;"><span>xrdp[<span style="color:#ae81ff">32</span>]: (<span style="color:#ae81ff">32</span>)(<span style="color:#ae81ff">140630472390464</span>)[DEBUG] Closed socket <span style="color:#ae81ff">6</span> (AF_INET6 :: port <span style="color:#ae81ff">3389</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>[<span style="color:#ae81ff">20240223</span><span style="color:#f92672">-</span><span style="color:#ae81ff">14</span>:<span style="color:#ae81ff">15</span>:<span style="color:#ae81ff">39</span>] [DEBUG] Closed socket <span style="color:#ae81ff">6</span> (AF_INET6 :: port <span style="color:#ae81ff">3389</span>)
+</span></span><span style="display:flex;"><span>root<span style="color:#a6e22e">@xps</span>:<span style="color:#f92672">/</span><span style="color:#75715e"># xrdp[33]: (33)(140630472390464)[INFO ] starting xrdp with pid 33</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>xrdp[<span style="color:#ae81ff">33</span>]: (<span style="color:#ae81ff">33</span>)(<span style="color:#ae81ff">140630472390464</span>)[INFO ] address [<span style="color:#ae81ff">0.0.0.0</span>] port [<span style="color:#ae81ff">3389</span>] mode <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>xrdp[<span style="color:#ae81ff">33</span>]: (<span style="color:#ae81ff">33</span>)(<span style="color:#ae81ff">140630472390464</span>)[INFO ] listening to port <span style="color:#ae81ff">3389</span> on <span style="color:#ae81ff">0.0.0.0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>xrdp[<span style="color:#ae81ff">33</span>]: (<span style="color:#ae81ff">33</span>)(<span style="color:#ae81ff">140630472390464</span>)[INFO ] xrdp_listen_pp done
+</span></span></code></pre></div><p>Wowwow that worked first try!!! For 3 seconds I felt confident, so now what&rsquo;s next? Well you need a client to connect to the service right? Luckily on Ubuntu <a href="https://remmina.org/how-to-install-remmina/#ubuntu">Remmina</a> is pretty straightforward to install and use. Alright I can finally connect to the service. I RDP on localhost and surprise surprise (⊙ _ ⊙ ).</p>
+<p><img src="/images/rdp.png" alt="alt"></p>
+<p>Well well wouldn&rsquo;t have been better to have a Windows machine when trying to learn about RDP and NTLM? At the best of my knowledge I believe that the answer is a yes.</p>
+<p>I didn&rsquo;t give up though, because straight after taking the few actions above, took me about 30 mins altogheter, I thought that I needed to figure out the story of the Windows machine (but that&rsquo;s easy enough right?) Go to <a href="https://shodan.io">shodan.io</a>, do a search for 3389 <em>et voilà</em>:</p>
+<p><img src="/images/shodan.png" alt="alt"></p>
+<p>No big deal&hellip; next I started to get a little bit deeper into the protocol analysis, I fired wireshark and applied a simple bpf rule ip.addr = &lt;ip_target&gt;, I opened an RDP session agaisnt a random host pulled from shodan DB, after a little bit of looking at the TLS handshake packets bingoooo!!! I found out that the server discloses hostname so I was hoping to find more, happy because I felt I had a clue, I started to dig deeper I checked every single packet, but I found nothing else than what is shown below:</p>
+<p><img src="/images/wireshark.png" alt="alt"></p>
+<p>At this stage I had some basic information, but the issue was to try disable encryption to be able to view the packets in clear and attempt to figure things out that way&hellip; but unfortunately I didn&rsquo;t have the time and also I really didn&rsquo;t feel like looking into how to achieve that, I had the feel it would waste me too much of precious time.</p>
+<p>After a little bit of head scratching I thought about looking into nmap, after all the purpose of the exercise was about writing an RDP scanner that would pull information from the handshake or something&hellip; I opened github and started to dig into some very interesting part of the nmap repo <a href="https://github.com/nmap/nmap/tree/master/scripts">/scripts</a> the <a href="https://nmap.org/book/man-nse.html">Nmap Scripting Engine (NSE)</a> is a very powerfull feature of the scanner that allows executing scripts in LUA, there is a huge amount amount of interesting things in that folder, I had the feeling that I could find the answer in there and in fact I did it!!! The command below executes <a href="https://github.com/nmap/nmap/blob/master/scripts/rdp-ntlm-info.nse">rdp-ntml-info.nse</a> LUA script.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alessandro@xps:~$ sudo nmap -p <span style="color:#ae81ff">3389</span> --script rdp-ntlm-info 207.81.231.54
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> alessandro: 
+</span></span><span style="display:flex;"><span>Starting Nmap 7.80 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2024-02-23 20:40 CET
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> d207-81-231-54.bchsia.telus.net <span style="color:#f92672">(</span>207.81.231.54<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.31s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PORT     STATE SERVICE
+</span></span><span style="display:flex;"><span>3389/tcp open  ms-wbt-server
+</span></span><span style="display:flex;"><span>| rdp-ntlm-info: 
+</span></span><span style="display:flex;"><span>|   Target_Name: OFFICE
+</span></span><span style="display:flex;"><span>|   NetBIOS_Domain_Name: OFFICE
+</span></span><span style="display:flex;"><span>|   NetBIOS_Computer_Name: SERVER2020-RDP
+</span></span><span style="display:flex;"><span>|   DNS_Domain_Name: office.local
+</span></span><span style="display:flex;"><span>|   DNS_Computer_Name: server2020-rdp.office.local
+</span></span><span style="display:flex;"><span>|   DNS_Tree_Name: office.local
+</span></span><span style="display:flex;"><span>|   Product_Version: 10.0.17763
+</span></span><span style="display:flex;"><span>|_  System_Time: 2024-02-23T19:40:54+00:00
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 2.49 seconds
+</span></span></code></pre></div><p>Bingooo!!! I had the answer and yet I didn&rsquo;t write a line of Python after about an hour or so of frenetic typing. My aim was actually to figure a fast solution, I have learnt over the years that business wants speed not elegance :P &hellip; I decided so to produce my first attempt brutally wrapping nmap command into a simple Python script <a href="https://github.com/CyberRoute/rdpscan/blob/main/rdp_extractor.py">rdp_extractor.py</a> I wasn&rsquo;t proud of what I produced but after all was the solution of tasks 1 and 2 right?</p>
+<p>Side note: the famous Docket container if tested with the same command won&rsquo;t work! Sorry what instructions should I follow to test this? Tip or trick?</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alessandro@xps:~$ sudo nmap -p <span style="color:#ae81ff">3389</span> --script rdp-ntlm-info localhost
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> alessandro: 
+</span></span><span style="display:flex;"><span>Starting Nmap 7.80 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2024-02-23 20:57 CET
+</span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> localhost <span style="color:#f92672">(</span>127.0.0.1<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.00051s latency<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>PORT     STATE SERVICE
+</span></span><span style="display:flex;"><span>3389/tcp open  ms-wbt-server
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Nmap <span style="color:#66d9ef">done</span>: <span style="color:#ae81ff">1</span> IP address <span style="color:#f92672">(</span><span style="color:#ae81ff">1</span> host up<span style="color:#f92672">)</span> scanned in 0.31 seconds
+</span></span></code></pre></div><p>Lesson learnt, never trust pdf attached to an email :D !!!</p>
+<p>I was happy I had a solution, but I had the feeling that was not what they actually wanted, I decided to provide something after a short time rather than keep going, I put together a report of my results and I send it over. After like 5 minutes I received an answer asking me to try with <a href="https://scapy.net/">scapy</a> (failed attempt number 1) (¬_¬&quot;)</p>
+<p>After a few attempts I managed to have a script that would trigger the RDP TLS handshake and grab some data but nothing around OS versions <a href="https://github.com/CyberRoute/rdpscan/blob/main/rdp_extractorv2.py">rdp_extractorv2.py</a> (failed attempt number 2) (¬_¬&quot;)</p>
+<p>At this stage was hours that I was trying to produce something, time was running out I so started to research code written in other languages that could replicate the nmap LUA script and I found this repo <a href="https://github.com/bogey3/NTLM_Info">NTLM_Info</a> I pulled the package I ported it to Python and job done!!! In between I tried a bunch of Python libraries like <a href="https://github.com/citronneur/rdpy">rdpy</a> and others without success.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alessandro@xps:~/Development/NTLM_Info$ python3 ntmlinfo.py 
+</span></span><span style="display:flex;"><span>+-------------------+-----------------------------------------------+
+</span></span><span style="display:flex;"><span>|       Server Name | SERVER2020-RDP                                |
+</span></span><span style="display:flex;"><span>|       Domain Name | OFFICE                                        |
+</span></span><span style="display:flex;"><span>|       Server FQDN | server2020-rdp.office.local                   |
+</span></span><span style="display:flex;"><span>|       Domain FQDN | office.local                                  |
+</span></span><span style="display:flex;"><span>|     Parent Domain | office.local                                  |
+</span></span><span style="display:flex;"><span>| OS Version Number | 10.0.17763                                    |
+</span></span><span style="display:flex;"><span>|        OS Version | Windows 10/Server <span style="color:#ae81ff">2019</span> <span style="color:#f92672">(</span>Build 17763<span style="color:#f92672">)</span>          |
+</span></span><span style="display:flex;"><span>+-------------------+-----------------------------------------------+
+</span></span></code></pre></div><p>So, end of the headache I figured!!! The simplest explanation of this I found <a href="https://www.tenable.com/plugins/was/114115">HTTP NTLM Information Disclosure</a></p>
+<h2 id="the-ntlm_infohttpsgithubcomcyberrouterdpscanblobmainntmlinfopy-script-explained">The <a href="https://github.com/CyberRoute/rdpscan/blob/main/ntmlinfo.py">ntlm_info</a> script explained</h2>
+<p>The script initiates an RDP connection to the specified IP address. It sends an NTLMSSP message requesting a challenge. The server responds with an NTLMSSP challenge message containing information such as server name, domain name, OS version, etc. The script receives this challenge, decodes it, and prints out the relevant information. Comparing the above with the nmap LUA script it is easy to understand that the answer was exactly in that script and specifically in:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-lua" data-lang="lua"><span style="display:flex;"><span><span style="color:#75715e">-- NTLMSSP Negotiate request mimicking a Windows 10 client</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">local</span> NTLM_NEGOTIATE_BLOB <span style="color:#f92672">=</span> stdnse.fromhex(
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;30 37 A0 03 02 01 60 A1 30 30 2E 30 2C A0 2A 04 28&#34;</span> <span style="color:#f92672">..</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;4e 54 4c 4d 53 53 50 00&#34;</span> <span style="color:#f92672">..</span> <span style="color:#75715e">-- Identifier - NTLMSSP</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;01 00 00 00&#34;</span> <span style="color:#f92672">..</span>  <span style="color:#75715e">-- Type: NTLMSSP Negotiate - 01</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;B7 82 08 E2 &#34;</span> <span style="color:#f92672">..</span> <span style="color:#75715e">-- Flags (NEGOTIATE_SIGN_ALWAYS | NEGOTIATE_NTLM | NEGOTIATE_SIGN | REQUEST_TARGET | NEGOTIATE_UNICODE)</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;00 00 &#34;</span> <span style="color:#f92672">..</span>       <span style="color:#75715e">-- DomainNameLen</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;00 00&#34;</span> <span style="color:#f92672">..</span>        <span style="color:#75715e">-- DomainNameMaxLen</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;00 00 00 00&#34;</span> <span style="color:#f92672">..</span>  <span style="color:#75715e">-- DomainNameBufferOffset</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;00 00 &#34;</span> <span style="color:#f92672">..</span>       <span style="color:#75715e">-- WorkstationLen</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;00 00&#34;</span> <span style="color:#f92672">..</span>        <span style="color:#75715e">-- WorkstationMaxLen</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;00 00 00 00&#34;</span> <span style="color:#f92672">..</span>  <span style="color:#75715e">-- WorkstationBufferOffset</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;0A&#34;</span> <span style="color:#f92672">..</span>           <span style="color:#75715e">-- ProductMajorVersion = 10</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;00 &#34;</span> <span style="color:#f92672">..</span>          <span style="color:#75715e">-- ProductMinorVersion = 0</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;63 45 &#34;</span> <span style="color:#f92672">..</span>       <span style="color:#75715e">-- ProductBuild = 0x4563 = 17763</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;00 00 00&#34;</span> <span style="color:#f92672">..</span>     <span style="color:#75715e">-- Reserved</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;0F&#34;</span>              <span style="color:#75715e">-- NTLMRevision = 5 = NTLMSSP_REVISION_W2K3</span>
+</span></span><span style="display:flex;"><span>    )
+</span></span></code></pre></div><h2 id="lessons-learnt">Lessons learnt</h2>
+<p>Do not trust what you read 100%, think first if that makes sense and be critical! In this assignment a lot of details were left to the reader interpretation. Starting from the Docker container mimicking RDP, is it actually possible to enable NTLM on an RDP installed on a Linux machine? C&rsquo;mon I would not even try to enable that! Also I am still scratching my head, what is exactly a <strong>passive RDP data extractor</strong>? The solution is not really passive when to trigger the information disclosure from the Server is required a full handshake. Despite the struggle I learnt a lot of things over the couple of days I dedicated to this, I really enjoyed the moment I figured the solution that was super satisfying&hellip; Feel free to comment on the approach, what you think? How you would have approached this? Thanks for reading! Ciao</p>
+
+
+        
+
+        
+
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "https-cyberroute-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+          
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:alessandro.bresciani2016@gmail.com" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/CyberRoute" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://twitter.com/Cyber_Route" title="Twitter">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://reddit.com/u/Technical_Shelter621" title="Reddit">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-reddit-alien fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://linkedin.com/in/alessandro-bresciani-35763610" title="LinkedIn">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Alessandro Bresciani
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2024
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://cyberroute.github.io/">Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.122.0</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://cyberroute.github.io/js/main.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://cyberroute.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+
