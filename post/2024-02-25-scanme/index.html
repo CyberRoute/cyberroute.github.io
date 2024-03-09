@@ -64,7 +64,7 @@ There are plenty of tools out there that you can use for network scanning starti
   "headline": "Presenting Scanme: Deep Dive into Network Scanning with Golang: Building a Port Scanner",
   "description" : "Introduction: In today\u0026rsquo;s interconnected world, understanding network security is essential. One essential tool in a security professional\u0026rsquo;s arsenal is a port scanner. You probably thinking what? are you reinventing the wheel? Well not exactly I am building a deeper understanding of what happens under the hood.\nThere are plenty of tools out there that you can use for network scanning starting from the most famous and popular nmap, you can become a master at using them but have you ever tried to read them and understand the engineering behind?",
   "inLanguage" : "en",
-  "wordCount":  1105 ,
+  "wordCount":  1724 ,
   "datePublished" : "2024-02-25T00:00:00",
   "dateModified" : "2024-02-25T00:00:00",
   "image" : "https:\/\/cyberroute.github.io\/img\/avatar-icon.png",
@@ -357,13 +357,31 @@ There are plenty of tools out there that you can use for network scanning starti
 <p><strong>dst</strong>: This field is of type net.IP, represents the destination IP address. It is the IP address where the network packets will be sent.</p>
 <p><strong>gw</strong>: This field is also of type net.IP, representing the gateway IP address. The gateway is the device that routes network traffic between different networks.</p>
 <p><strong>src</strong>: This field is of type net.IP, representing the source IP address. It is the IP address from which the network packets will be sent.</p>
-<p><strong>handle</strong>: This field is a pointer to a pcap.Handle, which is used for capturing and processing network packets using the pcap library. pcap stands for Packet Capture.</p>
+<p><strong>handle</strong>: This field is a pointer to a pcap.Handle, which is used for capturing and processing network packets using the pcap library. pcap stands for Packet Capture.
+Note: if you read carefully the code you will notice that the shared pcap handle is used only to write the packets with the various send methods, after multiple tests I realized that separating R/W pcap handles would speed up operations, I am still not 100% sure this happens but I made sure to let them know <a href="https://github.com/google/gopacket/issues/1152">1152</a>.</p>
 <p><strong>opts</strong>: This field is of type gopacket.SerializeOptions, which contains options for serializing packets. It&rsquo;s used for configuring how packets are serialized before being sent over the network.</p>
 <p><strong>buf</strong>: This field is of type gopacket.SerializeBuffer, which is a buffer used for serializing packets. It&rsquo;s used in conjunction with the opts field for packet serialization.</p>
-<p><strong>tcpsequencer</strong>: This field is a pointer to a TCPSequencer. It deals with TCP packet sequencing.</p>
+<p><strong>tcpsequencer</strong>: This field is a pointer to a TCPSequencer. It deals with TCP packet sequencing. This was stolen from project <a href="https://github.com/projectdiscovery/naabu/blob/main/v2/pkg/scan/tcpsequencer.go">naabu-tcpsequencer</a>, I found this to be an awesome implementation and I learnt from it. The code defines a TCPSequencer struct and associated methods for generating linear TCP sequence numbers. It ensures that the sequence wraps around to 0 after reaching its maximum value. The NewTCPSequencer function initializes a new sequencer with a starting value of math.MaxUint32, and the Next method returns the next number in the sequence, ensuring safe concurrent access.</p>
 <p><strong>Packet Handling</strong>: Implements functions for decoding and handling network packets captured during the scanning process. This includes parsing Ethernet, IPv4, TCP, and ICMPv4 layers to identify relevant packet types and extract useful information.</p>
-<p><strong>Scanning Techniques</strong>: The port scanner supports multiple scanning techniques, including SYN scanning and full TCP handshake (connect) scanning. Each technique involves sending specific types of packets to target ports and analyzing the responses to determine port status (open, closed, filtered).</p>
-<p><strong>Grabbing Banners</strong>: An experimental feature so far implemented for FTP, SSH, IRC, MYSQL, LDAPS, HTTP, NNTP, IMAP, POP.</p>
+<p><strong>Scanning Techniques</strong>: The port scanner supports multiple scanning techniques, including SYN scanning and full TCP handshake (connect) scanning. Each technique involves sending specific types of packets to target ports and analyzing the responses to determine port status (open, closed, filtered).
+Choosing between a pcap-based TCP port scanner and a socket-based one depends on various factors, including your specific requirements, the environment in which the scanner will be deployed, and the capabilities you need. Here are some considerations for each approach and some of the reasons I decided to implement both :)</p>
+<p><strong>PCAP-based TCP Port Scanner (IPv4)</strong>:</p>
+<p>Packet Analysis: PCAP-based scanners capture raw network packets, allowing for in-depth analysis beyond TCP connections. You can inspect headers, payloads, and other packet attributes, enabling more advanced scanning techniques.
+Passive Scanning: PCAP scanners can operate passively, meaning they can monitor network traffic without actively sending packets. This can be useful for monitoring network activity or analyzing traffic patterns.
+Advanced Features: PCAP libraries offer advanced features like packet filtering, packet reassembly, and protocol analysis, which can be beneficial for complex scanning scenarios.</p>
+<p><strong>Socket-based TCP Port Scanner (IPv4, IPv6)</strong>:
+Simplicity: Socket-based scanners are generally simpler to implement and understand. They use standard TCP sockets for communication, which are familiar to most developers.
+Control: Socket-based scanners provide more control over packet generation and manipulation. You can customize packet headers, payloads, and timing parameters as needed.
+Performance: Socket-based scanners may offer better performance for certain tasks, especially when dealing with high-speed networks or large volumes of traffic. Although I am still reasearching why this implementation the pcap version is actually faster.
+In summary, if you need advanced packet analysis capabilities, passive scanning, or platform independence, a PCAP-based scanner may be the better choice. However, if simplicity, control, performance, or portability are more critical for your application, a socket-based scanner might be preferable. Ultimately, the choice depends on your specific requirements and the trade-offs you&rsquo;re willing to make.</p>
+<p><strong>Grabbing Banners</strong>: An experimental feature so far implemented for FTP, SSH, IRC, MYSQL, LDAPS, HTTP, NNTP, IMAP, POP. This this is only implemented and working for the pcap based. For most of the protocols the banners are grabbed with a generic approach by establishing a TCP connection and reading the banner from it. If successful, it returns the banner or header. The interesting one here is LDAPS, The GetLDAPBanner function establishes a TLS connection to an LDAP server specified by an IP address and port. It then performs an unauthenticated bind to the LDAP server and searches for server information in the root DSE (Directory Service Entry). After retrieving the search result, it formats the server information into a string and returns it along with any encountered errors. This function essentially retrieves LDAP server information from the root DSE and formats it as a banner string. Here a recommended read <a href="https://book.hacktricks.xyz/network-services-pentesting/pentesting-ldap">pentesting-ldap</a>, I basically ported the code snippet below in Go.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> <span style="color:#f92672">import</span> ldap3
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> server <span style="color:#f92672">=</span> ldap3<span style="color:#f92672">.</span>Server(<span style="color:#e6db74">&#39;x.X.x.X&#39;</span>, get_info <span style="color:#f92672">=</span> ldap3<span style="color:#f92672">.</span>ALL, port <span style="color:#f92672">=</span><span style="color:#ae81ff">636</span>, use_ssl <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> connection <span style="color:#f92672">=</span> ldap3<span style="color:#f92672">.</span>Connection(server)
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> connection<span style="color:#f92672">.</span>bind()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&gt;&gt;&gt;</span> server<span style="color:#f92672">.</span>info
+</span></span></code></pre></div><p><strong>Some samples to get the feel of the grabbers</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>024/03/07 14:20:34 Port 21<span style="color:#f92672">(</span>ftp<span style="color:#f92672">)</span> open Version: 220---------- Welcome to Pure-FTPd <span style="color:#f92672">[</span>privsep<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>TLS<span style="color:#f92672">]</span> ----------
 </span></span><span style="display:flex;"><span>2024/03/06 16:42:16 Port 22<span style="color:#f92672">(</span>ssh<span style="color:#f92672">)</span> open Version: SSH-2.0-OpenSSH_7.4
 </span></span><span style="display:flex;"><span>2024/03/07 14:20:34 Port 25<span style="color:#f92672">(</span>smtp<span style="color:#f92672">)</span> open Version: 220-tomasi.dnshigh.com ESMTP Exim 4.96.2 <span style="color:#75715e">#2 Thu, 07 Mar 2024 14:20:34 +0100</span>
@@ -400,7 +418,9 @@ There are plenty of tools out there that you can use for network scanning starti
 </span></span><span style="display:flex;"><span>2024/03/08 17:16:48 Port 2086<span style="color:#f92672">(</span>gnunet<span style="color:#f92672">)</span> open
 </span></span><span style="display:flex;"><span>2024/03/08 17:16:48 Port 2083<span style="color:#f92672">(</span>radsec<span style="color:#f92672">)</span> open
 </span></span><span style="display:flex;"><span>2024/03/08 17:16:48 Execution time: 14.979338609s
-</span></span></code></pre></div>
+</span></span></code></pre></div><p>The project it is a work progress, feel free to contribute and/or comment if you enjoyed the article I&rsquo;d love to hear from you.
+Ciao and to the next! Keep hacking!!!</p>
+
 
         
 
