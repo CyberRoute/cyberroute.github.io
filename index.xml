@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</managingEditor>
     <webMaster>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</webMaster>
-    <lastBuildDate>Sun, 25 Feb 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 11 Mar 2024 10:10:31 +0200</lastBuildDate>
     <atom:link href="https://cyberroute.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Presenting Bruter: a Web Server Testing Tool</title>
+      <link>https://cyberroute.github.io/post/2024-03-11-bruter/</link>
+      <pubDate>Mon, 11 Mar 2024 10:10:31 +0200</pubDate><author>alessandro.bresciani2016@gmail.com (Alessandro Bresciani)</author>
+      <guid>https://cyberroute.github.io/post/2024-03-11-bruter/</guid>
+      <description>Introduction Bruter is a lightweight application built as an experimental project while learning the Go programming language. Though inspired by the popular Xray tool from GitHub, Bruter introduces its own set of features, tailored specifically for web server testing and configuration validation. Whether you’re a seasoned web administrator or a beginner in cybersecurity, Bruter offers a streamlined way to assess various aspects of web servers with a user-friendly interface.&#xA;In this blog post, we’ll explore what Bruter does, how it works, and why it might be an essential addition to your web server auditing toolkit.</description>
+    </item>
     <item>
       <title>Presenting Scanme: Deep Dive into Network Scanning with Golang: Building a Port Scanner</title>
       <link>https://cyberroute.github.io/post/2024-02-25-scanme/</link>

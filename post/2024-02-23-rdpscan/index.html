@@ -63,7 +63,7 @@
   "headline": "Wannabe Security Researcher!?!?",
   "description" : "This is the very first article that I am publishing on this blog, I wanted to share this experience with folks that are passionate like myself about Security at 360 degrees and also share my thought process to actually produce the correct solution. The assignment received has been pretty interesting and at the same time challenging given that I consider myself a wannabe Security Researcher :D. Without further ado, let\u0026rsquo;s get into it!",
   "inLanguage" : "en",
-  "wordCount":  1881 ,
+  "wordCount":  1898 ,
   "datePublished" : "2024-02-23T00:00:00",
   "dateModified" : "2024-02-23T00:00:00",
   "image" : "https:\/\/cyberroute.github.io\/img\/avatar-icon.png",
@@ -133,9 +133,7 @@
                 
                   <a href="/post/2024-02-25-scanme">Scanme</a>
                 
-                  <a href="/#">Sample 2</a>
-                
-                  <a href="/#">Sample 3</a>
+                  <a href="/post/2024-03-11-bruter">Bruter</a>
                 
               </div>
             </li>
@@ -381,8 +379,10 @@ After giving the very first read to the whole doc I started to think to the step
 </span></span><span style="display:flex;"><span>xrdp[<span style="color:#ae81ff">33</span>]: (<span style="color:#ae81ff">33</span>)(<span style="color:#ae81ff">140630472390464</span>)[INFO ] listening to port <span style="color:#ae81ff">3389</span> on <span style="color:#ae81ff">0.0.0.0</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>xrdp[<span style="color:#ae81ff">33</span>]: (<span style="color:#ae81ff">33</span>)(<span style="color:#ae81ff">140630472390464</span>)[INFO ] xrdp_listen_pp done
-</span></span></code></pre></div><p>Wowwow that worked first try!!! For 3 seconds I felt confident, so now what&rsquo;s next? Well you need a client to connect to the service right? Luckily on Ubuntu <a href="https://remmina.org/how-to-install-remmina/#ubuntu">Remmina</a> is pretty straightforward to install and use. Alright I can finally connect to the service. I RDP on localhost and surprise surprise (⊙ _ ⊙ ).</p>
-<p><img src="/images/rdp.png" alt="alt"></p>
+</span></span></code></pre></div><p>Wowwow that worked first try!!! For 3 seconds I felt confident, so now what&rsquo;s next? Well you need a client to connect to the service right? Luckily on Ubuntu <a href="https://remmina.org/how-to-install-remmina/#ubuntu">Remmina</a> is pretty straightforward to install and use. Alright I can finally connect to the service. I RDP on localhost and surprise surprise (⊙ _ ⊙ ).
+docker build -t bruter .
+docker run &ndash;rm -it -p 8080:8080 bruter -domain example.com -shodan [shodanapikey] -verbose
+<img src="/images/rdp.png" alt="alt"></p>
 <p>Well well wouldn&rsquo;t have been better to have a Windows machine when trying to learn about RDP and NTLM? At the best of my knowledge I believe that the answer is a yes.</p>
 <p>I didn&rsquo;t give up though, because straight after taking the few actions above, took me about 30 mins altogheter, I thought that I needed to figure out the story of the Windows machine (but that&rsquo;s easy enough right?) Go to <a href="https://shodan.io">shodan.io</a>, do a search for 3389 <em>et voilà</em>:</p>
 <p><img src="/images/shodan.png" alt="alt"></p>
@@ -391,14 +391,14 @@ After giving the very first read to the whole doc I started to think to the step
 <p>At this stage I had some basic information, but the issue was to try disable encryption to be able to view the packets in clear and attempt to figure things out that way&hellip; but unfortunately I didn&rsquo;t have the time and also I really didn&rsquo;t feel like looking into how to achieve that, I had the feel it would waste me too much of precious time.</p>
 <p>After a little bit of head scratching I thought about looking into nmap, after all the purpose of the exercise was about writing an RDP scanner that would pull information from the handshake or something&hellip; I opened github and started to dig into some very interesting part of the nmap repo <a href="https://github.com/nmap/nmap/tree/master/scripts">/scripts</a> the <a href="https://nmap.org/book/man-nse.html">Nmap Scripting Engine (NSE)</a> is a very powerfull feature of the scanner that allows executing scripts in LUA, there is a huge amount of interesting things in that folder, I had the feeling that I could find the answer in there and in fact I did it!!! The command below executes <a href="https://github.com/nmap/nmap/blob/master/scripts/rdp-ntlm-info.nse">rdp-ntml-info.nse</a> LUA script.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alessandro@xps:~$ sudo nmap -p <span style="color:#ae81ff">3389</span> --script rdp-ntlm-info 207.81.231.54
-</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> alessandro: 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> alessandro:
 </span></span><span style="display:flex;"><span>Starting Nmap 7.80 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2024-02-23 20:40 CET
 </span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> d207-81-231-54.bchsia.telus.net <span style="color:#f92672">(</span>207.81.231.54<span style="color:#f92672">)</span>
 </span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.31s latency<span style="color:#f92672">)</span>.
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>PORT     STATE SERVICE
 </span></span><span style="display:flex;"><span>3389/tcp open  ms-wbt-server
-</span></span><span style="display:flex;"><span>| rdp-ntlm-info: 
+</span></span><span style="display:flex;"><span>| rdp-ntlm-info:
 </span></span><span style="display:flex;"><span>|   Target_Name: OFFICE
 </span></span><span style="display:flex;"><span>|   NetBIOS_Domain_Name: OFFICE
 </span></span><span style="display:flex;"><span>|   NetBIOS_Computer_Name: SERVER2020-RDP
@@ -412,7 +412,7 @@ After giving the very first read to the whole doc I started to think to the step
 </span></span></code></pre></div><p>Bingooo!!! I had the answer and yet I didn&rsquo;t write a line of Python after about an hour or so of frenetic typing. My aim was actually to figure a fast solution, I have learnt over the years that business wants speed not elegance :P &hellip; I decided so to produce my first attempt brutally wrapping nmap command into a simple Python script <a href="https://github.com/CyberRoute/rdpscan/blob/main/rdp_extractor.py">rdp_extractor.py</a> I wasn&rsquo;t proud of what I produced but after all was the solution of tasks 1 and 2 right?</p>
 <p>Side note: the famous Docket container if tested with the same command won&rsquo;t work! Sorry what instructions should I follow to test this? Tip or trick?</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alessandro@xps:~$ sudo nmap -p <span style="color:#ae81ff">3389</span> --script rdp-ntlm-info localhost
-</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> alessandro: 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> alessandro:
 </span></span><span style="display:flex;"><span>Starting Nmap 7.80 <span style="color:#f92672">(</span> https://nmap.org <span style="color:#f92672">)</span> at 2024-02-23 20:57 CET
 </span></span><span style="display:flex;"><span>Nmap scan report <span style="color:#66d9ef">for</span> localhost <span style="color:#f92672">(</span>127.0.0.1<span style="color:#f92672">)</span>
 </span></span><span style="display:flex;"><span>Host is up <span style="color:#f92672">(</span>0.00051s latency<span style="color:#f92672">)</span>.
@@ -425,7 +425,7 @@ After giving the very first read to the whole doc I started to think to the step
 <p>I was happy I had a solution, but I had the feeling that was not what they actually wanted, I decided to provide something after a short time rather than keep going, I put together a report of my results and I send it over. After like 5 minutes I received an answer asking me to try with <a href="https://scapy.net/">scapy</a> (failed attempt number 1) (¬_¬&quot;)</p>
 <p>After a few attempts I managed to have a script that would trigger the RDP TLS handshake and grab some data but nothing around OS versions <a href="https://github.com/CyberRoute/rdpscan/blob/main/rdp_extractorv2.py">rdp_extractorv2.py</a> (failed attempt number 2) (¬_¬&quot;)</p>
 <p>At this stage was hours that I was trying to produce something, time was running out I so started to research code written in other languages that could replicate the nmap LUA script and I found this repo <a href="https://github.com/bogey3/NTLM_Info">NTLM_Info</a> I pulled the package I ported it to Python and job done!!! In between I tried a bunch of Python libraries like <a href="https://github.com/citronneur/rdpy">rdpy</a> and others without success.</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alessandro@xps:~/Development/NTLM_Info$ python3 ntmlinfo.py 
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>alessandro@xps:~/Development/NTLM_Info$ python3 ntmlinfo.py
 </span></span><span style="display:flex;"><span>+-------------------+-----------------------------------------------+
 </span></span><span style="display:flex;"><span>|       Server Name | SERVER2020-RDP                                |
 </span></span><span style="display:flex;"><span>|       Domain Name | OFFICE                                        |
