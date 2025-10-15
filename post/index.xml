@@ -2,40 +2,40 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on Blog</title>
-    <link>http://localhost:1313/post/</link>
+    <link>https://cyberroute.github.io/post/</link>
     <description>Recent content in Posts on Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <managingEditor>cyberroute@proton.me (Alessandro Bresciani)</managingEditor>
     <webMaster>cyberroute@proton.me (Alessandro Bresciani)</webMaster>
     <lastBuildDate>Tue, 14 Oct 2025 10:10:31 +0200</lastBuildDate>
-    <atom:link href="http://localhost:1313/post/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://cyberroute.github.io/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Exploiting CORS vulnerability with basic origin reflection</title>
-      <link>http://localhost:1313/post/2025-10-14-cors/</link>
+      <link>https://cyberroute.github.io/post/2025-10-14-cors/</link>
       <pubDate>Tue, 14 Oct 2025 10:10:31 +0200</pubDate><author>cyberroute@proton.me (Alessandro Bresciani)</author>
-      <guid>http://localhost:1313/post/2025-10-14-cors/</guid>
+      <guid>https://cyberroute.github.io/post/2025-10-14-cors/</guid>
       <description>Exploiting CORS Misconfigurations Introduction During a recent security assessment, I discovered a CORS (Cross-Origin Resource Sharing) misconfiguration that allowed complete bypass of the Same-Origin Policy. This vulnerability enabled an attacker to steal sensitive user information including API keys, email addresses, and session tokens from authenticated users.&#xA;In this guide, I&amp;rsquo;ll walk you through the complete exploitation process using PortSwigger&amp;rsquo;s Web Security Academy lab as a practical example.&#xA;Lab: CORS vulnerability with basic origin reflection</description>
     </item>
     <item>
       <title>Presenting Bruter: a Web Server Testing Tool</title>
-      <link>http://localhost:1313/post/2024-03-11-bruter/</link>
+      <link>https://cyberroute.github.io/post/2024-03-11-bruter/</link>
       <pubDate>Mon, 11 Mar 2024 10:10:31 +0200</pubDate><author>cyberroute@proton.me (Alessandro Bresciani)</author>
-      <guid>http://localhost:1313/post/2024-03-11-bruter/</guid>
+      <guid>https://cyberroute.github.io/post/2024-03-11-bruter/</guid>
       <description>Introduction Bruter is a lightweight application built as an experimental project while learning the Go programming language. Though inspired by the popular Xray tool from GitHub, Bruter introduces its own set of features, tailored specifically for web server testing and configuration validation. Whether you’re a seasoned web administrator or a beginner in cybersecurity, Bruter offers a streamlined way to assess various aspects of web servers with a user-friendly interface.&#xA;In this blog post, we’ll explore what Bruter does, how it works, and why it might be an essential addition to your web server auditing toolkit.</description>
     </item>
     <item>
       <title>Presenting Scanme: Deep Dive into Network Scanning with Golang: Building a Port Scanner</title>
-      <link>http://localhost:1313/post/2024-02-25-scanme/</link>
+      <link>https://cyberroute.github.io/post/2024-02-25-scanme/</link>
       <pubDate>Sun, 25 Feb 2024 00:00:00 +0000</pubDate><author>cyberroute@proton.me (Alessandro Bresciani)</author>
-      <guid>http://localhost:1313/post/2024-02-25-scanme/</guid>
+      <guid>https://cyberroute.github.io/post/2024-02-25-scanme/</guid>
       <description>Introduction: In today&amp;rsquo;s interconnected world, understanding network security is essential. One essential tool in a security professional&amp;rsquo;s arsenal is a port scanner. You probably thinking what? are you reinventing the wheel? Well not exactly I am building a deeper understanding of what happens under the hood.&#xA;There are plenty of tools out there that you can use for network scanning starting from the most famous and popular nmap, you can become a master at using them but have you ever tried to read them and understand the engineering behind?</description>
     </item>
     <item>
       <title>Wannabe Security Researcher!?!?</title>
-      <link>http://localhost:1313/post/2024-02-23-rdpscan/</link>
+      <link>https://cyberroute.github.io/post/2024-02-23-rdpscan/</link>
       <pubDate>Fri, 23 Feb 2024 00:00:00 +0000</pubDate><author>cyberroute@proton.me (Alessandro Bresciani)</author>
-      <guid>http://localhost:1313/post/2024-02-23-rdpscan/</guid>
+      <guid>https://cyberroute.github.io/post/2024-02-23-rdpscan/</guid>
       <description>This is the very first article that I am publishing on this blog, I wanted to share this experience with folks that are passionate like myself about Security at 360 degrees and also share my thought process to actually produce the correct solution. The assignment received has been pretty interesting and at the same time challenging given that I consider myself a wannabe Security Researcher :D. Without further ado, let&amp;rsquo;s get into it!</description>
     </item>
   </channel>
