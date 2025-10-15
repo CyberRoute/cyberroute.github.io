@@ -65,7 +65,7 @@ Lab: CORS vulnerability with basic origin reflection">
   "headline": "Exploiting CORS vulnerability with basic origin reflection",
   "description" : "Exploiting CORS Misconfigurations Introduction During a recent security assessment, I discovered a CORS (Cross-Origin Resource Sharing) misconfiguration that allowed complete bypass of the Same-Origin Policy. This vulnerability enabled an attacker to steal sensitive user information including API keys, email addresses, and session tokens from authenticated users.\nIn this guide, I\u0026rsquo;ll walk you through the complete exploitation process using PortSwigger\u0026rsquo;s Web Security Academy lab as a practical example.\nLab: CORS vulnerability with basic origin reflection",
   "inLanguage" : "en",
-  "wordCount":  1431 ,
+  "wordCount":  1493 ,
   "datePublished" : "2025-10-14T10:10:31",
   "dateModified" : "2025-10-14T10:10:31",
   "image" : "https:\/\/cyberroute.github.io\/img\/avatar-icon.png",
@@ -338,10 +338,7 @@ Lab: CORS vulnerability with basic origin reflection">
 <li><a href="#discovery-with-burp-suite">Discovery with Burp Suite</a></li>
 <li><a href="#identifying-the-vulnerability">Identifying the Vulnerability</a></li>
 <li><a href="#building-the-exploit">Building the Exploit</a></li>
-<li><a href="#testing-locally">Testing Locally</a></li>
-<li><a href="#exploitation-workflow">Exploitation Workflow</a></li>
-<li><a href="#real-world-impact">Real-World Impact</a></li>
-<li><a href="#remediation">Remediation</a></li>
+<li><a href="#testing">Testing</a></li>
 </ol>
 <hr>
 <h2 id="understanding-cors">Understanding CORS</h2>
@@ -378,7 +375,7 @@ Response:
 <li>Authenticated requests are possible (cookies sent)</li>
 <li>Private data can be read by attacker&rsquo;s JavaScript</li>
 </ol>
-<h3 id="discovery-with-burp-suite">Discovery with Burp Suite</h3>
+<h2 id="discovery-with-burp-suite">Discovery with Burp Suite</h2>
 <p>For this walkthrough, I&rsquo;ll use PortSwigger&rsquo;s Web Security Academy <a href="https://portswigger.net/web-security/cors/lab-basic-origin-reflection-attack">https://portswigger.net/web-security/cors/lab-basic-origin-reflection-attack</a> - as the lab only request to upload the PoC onto their server I have decided to dig deeper to understand better the exploitation mechanism behind it. And I proved that this worked also on ngrok instances.</p>
 <h3 id="step-1-configure-burp-suite">Step 1: Configure Burp Suite</h3>
 <p>Start Burp Suite and ensure Proxy is listening on 127.0.0.1:8080
@@ -408,7 +405,7 @@ Content-Type: application/json; charset=utf-8
     &#34;WRBRHjZi4XECoH7sK8975BtpftkGyU3u&#34;
   ]
 }
-</code></pre><h3 id="identifying-the-vulnerability">Identifying the Vulnerability</h3>
+</code></pre><h2 id="identifying-the-vulnerability">Identifying the Vulnerability</h2>
 <h3 id="step-4-send-to-repeater">Step 4: Send to Repeater</h3>
 <ol>
 <li>Right-click on the /accountDetails request</li>
@@ -688,6 +685,23 @@ Content-Length: 189
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># Start Python web server</span>
 </span></span><span style="display:flex;"><span>python3 -m http.server <span style="color:#ae81ff">8000</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># In a new terminal, start ngrok</span>
+</span></span><span style="display:flex;"><span>ngrok http <span style="color:#ae81ff">8000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Ngrok will provide you with a public URL like:                                                                                                                                                                            <span style="color:#f92672">(</span>Ctrl+C to quit<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                                 
+</span></span><span style="display:flex;"><span>🐋 Create instant endpoints <span style="color:#66d9ef">for</span> local containers within Docker Desktop → https://ngrok.com/r/docker                                                                                              
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                                 
+</span></span><span style="display:flex;"><span>Session Status                online                                                                                                                                                             
+</span></span><span style="display:flex;"><span>Account                       example@gmail.com <span style="color:#f92672">(</span>Plan: Free<span style="color:#f92672">)</span>                                                                                                                    
+</span></span><span style="display:flex;"><span>Version                       3.30.0                                                                                                                                                             
+</span></span><span style="display:flex;"><span>Region                        Europe <span style="color:#f92672">(</span>eu<span style="color:#f92672">)</span>                                                                                                                                                        
+</span></span><span style="display:flex;"><span>Latency                       39ms                                                                                                                                                               
+</span></span><span style="display:flex;"><span>Web Interface                 http://127.0.0.1:4040                                                                                                                                              
+</span></span><span style="display:flex;"><span>Forwarding                    https://arabinosic-edra-overplainly.ngrok-free.dev -&gt; http://localhost:8000                                                                                        
+</span></span><span style="display:flex;"><span>                                                                                                                                                                                                 
+</span></span><span style="display:flex;"><span>Connections                   ttl     opn     rt1     rt5     p50     p90                                                                                                                        
+</span></span><span style="display:flex;"><span>                              <span style="color:#ae81ff">0</span>       <span style="color:#ae81ff">0</span>       0.00    0.00    0.00    0.00        
 </span></span></code></pre></div><h3 id="step-9-test-the-exploit">Step 9: Test the Exploit</h3>
 <p>Important: Use a fresh incognito/private window to avoid cookie conflicts!
 Terminal setup:</p>
