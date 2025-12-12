@@ -8,8 +8,15 @@
     <language>en-us</language>
     <managingEditor>cyberroute@proton.me (Alessandro Bresciani)</managingEditor>
     <webMaster>cyberroute@proton.me (Alessandro Bresciani)</webMaster>
-    <lastBuildDate>Tue, 14 Oct 2025 10:10:31 +0200</lastBuildDate>
+    <lastBuildDate>Thu, 11 Dec 2025 10:10:12 +0200</lastBuildDate>
     <atom:link href="https://cyberroute.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE</title>
+      <link>https://cyberroute.github.io/post/2025-12-11-localstack-hack/</link>
+      <pubDate>Thu, 11 Dec 2025 10:10:12 +0200</pubDate><author>cyberroute@proton.me (Alessandro Bresciani)</author>
+      <guid>https://cyberroute.github.io/post/2025-12-11-localstack-hack/</guid>
+      <description>What is Localstack and how to quick start it? Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python and seemed interesting enough to look into it.&#xA;Once installed the localstack can be started:&#xA;(venv) ┌──(cyberroute)-[~/Development/localstack_code] └─$ localstack start -d __ _______ __ __ / / ____ _________ _/ / ___// /_____ ______/ /__ / / / __ \/ ___/ __ `/ /\__ \/ __/ __ `/ ___/ //_/ / /___/ /_/ / /__/ /_/ / /___/ / /_/ /_/ / /__/ ,&amp;lt; /_____/\____/\___/\__,_/_//____/\__/\__,_/\___/_/|_| - LocalStack CLI: 4.</description>
+    </item>
     <item>
       <title>Exploiting CORS vulnerability with basic origin reflection</title>
       <link>https://cyberroute.github.io/post/2025-10-14-cors/</link>
