@@ -223,7 +223,7 @@
           
             <article class="post-preview">
     <a href="https://cyberroute.github.io/post/2025-12-11-localstack-hack/">
-        <h2 class="post-title">Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE</h2>
+        <h2 class="post-title">From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI</h2>
         
         
         
@@ -249,9 +249,8 @@
     </p>
     <div class="post-entry">
         
-        What is Localstack and how to quick start it? Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python and seemed interesting enough to look into it.
-Once installed the localstack can be started:
-(venv) ┌──(cyberroute)-[~/Development/localstack_code] └─$ localstack start -d __ _______ __ __ / / ____ _________ _/ / ___// /_____ ______/ /__ / / / __ \/ ___/ __ `/ /\__ \/ __/ __ `/ ___/ //_/ / /___/ /_/ / /__/ /_/ / /___/ / /_/ /_/ / /__/ ,&lt; /_____/\____/\___/\__,_/_//____/\__/\__,_/\___/_/|_| - LocalStack CLI: 4.
+        What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.
+Because LocalStack runs on localhost and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a reflected XSS vulnerability.
         <a href="https://cyberroute.github.io/post/2025-12-11-localstack-hack/" class="post-read-more">[Read More]</a>
         
     </div>

