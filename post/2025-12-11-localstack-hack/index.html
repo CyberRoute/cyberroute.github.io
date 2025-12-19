@@ -64,7 +64,7 @@ Because LocalStack runs on localhost and is marketed as a development-only tool,
   "headline": "CVE-2025-65200: From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI",
   "description" : "What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.\nBecause LocalStack runs on localhost and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a reflected XSS vulnerability.",
   "inLanguage" : "en",
-  "wordCount":  2127 ,
+  "wordCount":  2154 ,
   "datePublished" : "2025-12-11T10:10:12",
   "dateModified" : "2025-12-11T10:10:12",
   "image" : "https:\/\/cyberroute.github.io\/img\/avatar-icon.png",
@@ -762,7 +762,12 @@ Security researchers invest significant time identifying and responsibly disclos
 That said, the research itself was fascinating, and I hope this write-up helps other developers understand the risks of running development tools that expose localhost services.</p>
 <h1 id="affected-version">Affected Version</h1>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>localstack-core<span style="color:#f92672">==</span>4.9.2
-</span></span></code></pre></div>
+</span></span></code></pre></div><h1 id="acknowledgments">Acknowledgments</h1>
+<ul>
+<li>Thanks to the Arcadia Discord Community for always sharing wisdom: <a href="https://discord.gg/https://discord.gg/btZpkp45gQ">https://discord.gg/https://discord.gg/btZpkp45gQ</a></li>
+<li>Thanks to Dennis for this write-up: Hack the Stack with LocalStack: Code Vulnerabilities Explained: <a href="https://www.sonarsource.com/blog/hack-the-stack-with-localstack/">https://www.sonarsource.com/blog/hack-the-stack-with-localstack/</a></li>
+</ul>
+
 
         
 
