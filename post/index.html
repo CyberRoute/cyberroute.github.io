@@ -1,504 +1,127 @@
-<!DOCTYPE html>
-<html lang="en" itemscope itemtype="http://schema.org/WebPage">
-  <head>
-    
-
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-
- 
-
-
-      <title>Posts - </title>
-
-  <meta name="author" content="Alessandro Bresciani"/><script type="application/ld+json">
-{
-    "@context": "http://schema.org",
-    "@type": "WebSite",
-    "name": "Blog",
-    
-    "url": "https:\/\/cyberroute.github.io\/"
-}
-</script><script type="application/ld+json">
-{
-  "@context": "http://schema.org",
-  "@type": "Organization",
-  "name": "",
-  "url": "https:\/\/cyberroute.github.io\/"
-  
-  
-  
-  
-}
-</script>
-
+<!doctype html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Posts · cyberroute</title>
+<meta name="description" content="">
+<meta name="author" content="Alessandro Bresciani">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0b0d0e">
+<link rel="canonical" href="https://cyberroute.github.io/post/">
 <meta property="og:title" content="Posts" />
-<meta property="og:image" content="https://cyberroute.github.io/img/avatar-icon.png" />
-<meta property="og:url" content="https://cyberroute.github.io/post/" />
+<meta property="og:description" content="Software engineer in security based in Rome. Write-ups on vulnerabilities I find, CVEs I disclose, and the Go tools I build along the way." />
 <meta property="og:type" content="website" />
-<meta property="og:site_name" content="Blog" />
-
-  <meta name="twitter:title" content="Posts" />
-  <meta name="twitter:image" content="https://cyberroute.github.io/img/avatar-icon.png" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <link href='https://cyberroute.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
-  <meta name="generator" content="Hugo 0.123.7">
-  <link rel="alternate" href="https://cyberroute.github.io/index.xml" type="application/rss+xml" title="Blog"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.css" integrity="sha384-3UiQGuEI4TTMaFmGIZumfRPtfKQ3trwQE2JgosJxCnGmQpL/lJdjpcHkaaFwHlcI" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous"><link rel="stylesheet" href="https://cyberroute.github.io/css/main.css" /><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" /><link rel="stylesheet" href="https://cyberroute.github.io/css/syntax.css" /><link rel="stylesheet" href="https://cyberroute.github.io/css/codeblock.css" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.css" integrity="sha384-h/L2W9KefUClHWaty3SLE5F/qvc4djlyR4qY3NUV5HGQBBW7stbcfff1+I/vmsHh" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/default-skin/default-skin.min.css" integrity="sha384-iD0dNku6PYSIQLyfTOpB06F2KCZJAKLOThS5HRe8b3ibhdEQ6eKsFf/EeFxdOt5R" crossorigin="anonymous">
-
-  </head>
-  <body>
-    <nav class="navbar navbar-default navbar-fixed-top navbar-custom">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="https://cyberroute.github.io/">Blog</a>
-    </div>
-
-    <div class="collapse navbar-collapse" id="main-navbar">
-      <ul class="nav navbar-nav navbar-right">
-        
-          
-            <li>
-              <a title="Blog" href="/">Blog</a>
-            </li>
-          
-        
-          
-            <li class="navlinks-container">
-              <a class="navlinks-parent">Projects</a>
-              <div class="navlinks-children">
-                
-                  <a href="/post/2024-02-25-scanme">Scanme</a>
-                
-                  <a href="/post/2024-03-11-bruter">Bruter</a>
-                
-              </div>
-            </li>
-          
-        
-          
-            <li>
-              <a title="About" href="/page/about/">About</a>
-            </li>
-          
-        
-
-        
-
-        
-      </ul>
-    </div>
-
-    
-      <div class="avatar-container">
-        <div class="avatar-img-border">
-          <a title="Blog" href="https://cyberroute.github.io/">
-            <img class="avatar-img" src="https://cyberroute.github.io/img/avatar-icon.png" alt="Blog" />
-          </a>
-        </div>
-      </div>
-    
-
-  </div>
-</nav>
+<meta property="og:url" content="https://cyberroute.github.io/post/" />
 
 
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Posts"/>
+<meta name="twitter:description" content="Software engineer in security based in Rome. Write-ups on vulnerabilities I find, CVEs I disclose, and the Go tools I build along the way."/>
 
+<link rel="alternate" type="application/rss+xml" href="https://cyberroute.github.io/post/index.xml" title="cyberroute">
 
-    
+<link rel="stylesheet" href="/css/main.min.4ff7b1d046fea3917f30ba41d85309e7643e23a274ff03cd6e6c9122021cb89b.css" integrity="sha256-T/ex0Eb&#43;o5F/MLpB2FMJ52Q&#43;I6J0/wPNbmyRIgIcuJs=">
+<link rel="icon" href="/img/favicon.ico">
 
+</head>
+<body>
+<a class="skip" href="#main">skip to content</a>
+<header class="topbar">
+  <nav class="wrap nav" aria-label="Main">
+    <a class="prompt" href="/"><span class="pu">cyberroute</span><span class="pa">@</span><span class="ph">research</span><span class="pp">:~$</span><span class="caret" aria-hidden="true"></span></a>
+    <ul>
+      <li><a href="/post/" aria-current="page">posts</a></li>
+      <li><a href="/cves/">cves</a></li>
+      <li><a href="/tags/">tags</a></li>
+      <li><a href="/page/about/">about</a></li>
+    </ul>
+  </nav>
+</header>
 
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+<main id="main" class="wrap">
 
-<div class="pswp__bg"></div>
+<header class="post-head">
+  <p class="cmd"><span class="ps">$</span> ls -la post/</p>
+  <h1>posts</h1>
+  <p class="sub">5 entries</p>
+</header>
 
-<div class="pswp__scroll-wrap">
-    
-    <div class="pswp__container">
-      <div class="pswp__item"></div>
-      <div class="pswp__item"></div>
-      <div class="pswp__item"></div>
-    </div>
-    
-    <div class="pswp__ui pswp__ui--hidden">
-    <div class="pswp__top-bar">
-      
-      <div class="pswp__counter"></div>
-      <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
-      <button class="pswp__button pswp__button--share" title="Share"></button>
-      <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
-      <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
-      
-      
-      <div class="pswp__preloader">
-        <div class="pswp__preloader__icn">
-          <div class="pswp__preloader__cut">
-            <div class="pswp__preloader__donut"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-      <div class="pswp__share-tooltip"></div>
-    </div>
-    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-    </button>
-    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-    </button>
-    <div class="pswp__caption">
-      <div class="pswp__caption__center"></div>
-    </div>
-    </div>
-    </div>
+<section class="block">
+  <h2 class="h"><span>##</span> 2025</h2>
+  <ul class="log"><li class="entry">
+  <time datetime="2025-12-11">2025-12-11</time>
+  <div class="entry-body">
+    <a class="entry-title" href="/post/2025-12-11-localstack-hack/">From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI</a>
+    <div class="meta"><span class="kind kind-advisory">advisory</span><span class="pill sev-critical">CVE-2025-65200</span><span class="pill sev-medium">CVE-2025-69723</span><a class="tag" href="/tags/xss/">#xss</a><a class="tag" href="/tags/rce/">#rce</a><a class="tag" href="/tags/localstack/">#localstack</a><a class="tag" href="/tags/cloudformation/">#cloudformation</a><a class="tag" href="/tags/aws/">#aws</a>
 </div>
 
-
-  
-  
-  
-
-
-
-
-
-
-  
-
-  <header class="header-section ">
-    
-    
-    <div class="intro-header no-img">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-            <div class="post-heading">
-              
-                <h1>Posts</h1>
-              
-              
-              
-              
-                <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on December 11, 2025
-  
-  
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Alessandro Bresciani
-    
-  
-  
-</span>
-
-
-              
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  
-  </header>
-
-
-    
-  <div class="container" role="main">
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        
-        <div class="posts-list">
-          
-            <article class="post-preview">
-    <a href="https://cyberroute.github.io/post/2025-12-11-localstack-hack/">
-        <h2 class="post-title">From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on December 11, 2025
-  
-  
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Alessandro Bresciani
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        CVE Identifiers Update (October 22, 2026): both CVEs are now published on the NVD.
-CVE Description CVSS 3.1 CWE CVE-2025-65200 Remote Code Execution via XSS to CloudFormation Chain 9.6 Critical (AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H) CWE-79 CVE-2025-69723 Reflected Cross-Site Scripting (XSS) Vulnerability 6.1 Medium (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N) CWE-79 What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.
-        <a href="https://cyberroute.github.io/post/2025-12-11-localstack-hack/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-
-</article>
-          
-            <article class="post-preview">
-    <a href="https://cyberroute.github.io/post/2025-10-14-cors/">
-        <h2 class="post-title">Exploiting CORS vulnerability with basic origin reflection</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on October 14, 2025
-  
-  
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Alessandro Bresciani
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        Exploiting CORS Misconfigurations Introduction During a recent security assessment, I discovered a CORS (Cross-Origin Resource Sharing) misconfiguration that allowed complete bypass of the Same-Origin Policy. This vulnerability enabled an attacker to steal sensitive user information including API keys, email addresses, and session tokens from authenticated users.
-In this guide, I&rsquo;ll walk you through the complete exploitation process using PortSwigger&rsquo;s Web Security Academy lab as a practical example.
-Lab: CORS vulnerability with basic origin reflection
-        <a href="https://cyberroute.github.io/post/2025-10-14-cors/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-
-</article>
-          
-            <article class="post-preview">
-    <a href="https://cyberroute.github.io/post/2024-03-11-bruter/">
-        <h2 class="post-title">Presenting Bruter: a Web Server Testing Tool</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on March 11, 2024
-  
-  
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Alessandro Bresciani
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        Introduction Bruter is a lightweight application built as an experimental project while learning the Go programming language. Though inspired by the popular Xray tool from GitHub, Bruter introduces its own set of features, tailored specifically for web server testing and configuration validation. Whether you’re a seasoned web administrator or a beginner in cybersecurity, Bruter offers a streamlined way to assess various aspects of web servers with a user-friendly interface.
-In this blog post, we’ll explore what Bruter does, how it works, and why it might be an essential addition to your web server auditing toolkit.
-        <a href="https://cyberroute.github.io/post/2024-03-11-bruter/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-
-</article>
-          
-            <article class="post-preview">
-    <a href="https://cyberroute.github.io/post/2024-02-25-scanme/">
-        <h2 class="post-title">Presenting Scanme: Deep Dive into Network Scanning with Golang: Building a Port Scanner</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on February 25, 2024
-  
-  
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Alessandro Bresciani
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        Introduction: In today&rsquo;s interconnected world, understanding network security is essential. One essential tool in a security professional&rsquo;s arsenal is a port scanner. You probably thinking what? are you reinventing the wheel? Well not exactly I am building a deeper understanding of what happens under the hood.
-There are plenty of tools out there that you can use for network scanning starting from the most famous and popular nmap, you can become a master at using them but have you ever tried to read them and understand the engineering behind?
-        <a href="https://cyberroute.github.io/post/2024-02-25-scanme/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-
-</article>
-          
-            <article class="post-preview">
-    <a href="https://cyberroute.github.io/post/2024-02-23-rdpscan/">
-        <h2 class="post-title">Wannabe Security Researcher!?!?</h2>
-        
-        
-        
-    </a>
-
-    <p class="post-meta">
-        <span class="post-meta">
-  
-  
-  <i class="fas fa-calendar"></i>&nbsp;Posted on February 23, 2024
-  
-  
-  
-  
-    
-      &nbsp;|&nbsp;<i class="fas fa-user"></i>&nbsp;Alessandro Bresciani
-    
-  
-  
-</span>
-
-
-    </p>
-    <div class="post-entry">
-        
-        This is the very first article that I am publishing on this blog, I wanted to share this experience with folks that are passionate like myself about Security at 360 degrees and also share my thought process to actually produce the correct solution. The assignment received has been pretty interesting and at the same time challenging given that I consider myself a wannabe Security Researcher :D. Without further ado, let&rsquo;s get into it!
-        <a href="https://cyberroute.github.io/post/2024-02-23-rdpscan/" class="post-read-more">[Read More]</a>
-        
-    </div>
-
-    
-
-</article>
-          
-        </div>
-        
-      </div>
-    </div>
+    <p class="desc">A reflected XSS in LocalStack&#39;s CloudFormation deploy UI, chained into code execution inside the container.</p>
   </div>
+</li>
+<li class="entry">
+  <time datetime="2025-10-14">2025-10-14</time>
+  <div class="entry-body">
+    <a class="entry-title" href="/post/2025-10-14-cors/">Exploiting CORS vulnerability with basic origin reflection</a>
+    <div class="meta"><span class="kind kind-writeup">writeup</span><a class="tag" href="/tags/cors/">#cors</a><a class="tag" href="/tags/web/">#web</a><a class="tag" href="/tags/sop-bypass/">#sop-bypass</a>
+</div>
 
-      
-<footer>
-  <div class="container">
-    
-    <div class="row">
-      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-        <ul class="list-inline text-center footer-links">
-          
-              <li>
-		
-		  <a href="mailto:cyberroute@proton.me" title="Email me">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://github.com/CyberRoute" title="GitHub">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-github fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-              <li>
-		
-		  <a href="https://linkedin.com/in/alessandro-bresciani-35763610" title="LinkedIn">
-		
-                  <span class="fa-stack fa-lg">
-                    <i class="fas fa-circle fa-stack-2x"></i>
-                    <i class="fab fa-linkedin fa-stack-1x fa-inverse"></i>
-                  </span>
-                </a>
-              </li>
-          
-        </ul>
-        <p class="credits copyright text-muted">
-          
-            
-              Alessandro Bresciani
-            
-          
-
-          &nbsp;&bull;&nbsp;&copy;
-          
-            2025
-          
-
-          
-            &nbsp;&bull;&nbsp;
-            <a href="https://cyberroute.github.io/">Blog</a>
-          
-        </p>
-        
-        <p class="credits theme-by text-muted">
-          <a href="https://gohugo.io">Hugo v0.123.7</a> powered &nbsp;&bull;&nbsp; Theme <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a> adapted from <a href="https://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a>
-          
-        </p>
-      </div>
-    </div>
+    <p class="desc">A CORS misconfiguration with basic origin reflection that let an attacker steal API keys, emails and session tokens.</p>
   </div>
-</footer><script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/katex.min.js" integrity="sha384-G0zcxDFp5LWZtDuRMnBkk3EphCK1lhEf4UEyEM693ka574TZGwo4IWwS6QLzM/2t" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.7/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
-<script src="https://code.jquery.com/jquery-3.7.0.slim.min.js" integrity="sha384-w5y/xIeYixWvfM+A1cEbmHPURnvyqmVg5eVENruEdDjcyRLUSNej7512JQGspFUr" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.4.1/dist/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+</li>
+</ul>
+</section>
 
-<script src="https://cyberroute.github.io/js/main.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe.min.js" integrity="sha384-QELNnmcmU8IR9ZAykt67vGr9/rZJdHbiWi64V88fCPaOohUlHCqUD/unNN0BXSqy" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.2/photoswipe-ui-default.min.js" integrity="sha384-m67o7SkQ1ALzKZIFh4CiTA8tmadaujiTa9Vu+nqPSwDOqHrDmxLezTdFln8077+q" crossorigin="anonymous"></script><script src="https://cyberroute.github.io/js/load-photoswipe.js"></script>
+<section class="block">
+  <h2 class="h"><span>##</span> 2024</h2>
+  <ul class="log"><li class="entry">
+  <time datetime="2024-03-11">2024-03-11</time>
+  <div class="entry-body">
+    <a class="entry-title" href="/post/2024-03-11-bruter/">Presenting Bruter: a Web Server Testing Tool</a>
+    <div class="meta"><span class="kind kind-tool">tool</span><a class="tag" href="/tags/go/">#go</a><a class="tag" href="/tags/web/">#web</a><a class="tag" href="/tags/tooling/">#tooling</a>
+</div>
+
+    <p class="desc">A lightweight Go tool for web server testing and configuration validation.</p>
+  </div>
+</li>
+<li class="entry">
+  <time datetime="2024-02-25">2024-02-25</time>
+  <div class="entry-body">
+    <a class="entry-title" href="/post/2024-02-25-scanme/">Presenting Scanme: Deep Dive into Network Scanning with Golang: Building a Port Scanner</a>
+    <div class="meta"><span class="kind kind-tool">tool</span><a class="tag" href="/tags/go/">#go</a><a class="tag" href="/tags/network/">#network</a><a class="tag" href="/tags/port-scanning/">#port-scanning</a>
+</div>
+
+    <p class="desc">Building a port scanner in Go to understand what happens under the hood of network scanning.</p>
+  </div>
+</li>
+<li class="entry">
+  <time datetime="2024-02-23">2024-02-23</time>
+  <div class="entry-body">
+    <a class="entry-title" href="/post/2024-02-23-rdpscan/">Wannabe Security Researcher!?!?</a>
+    <div class="meta"><span class="kind kind-writeup">writeup</span><a class="tag" href="/tags/rdp/">#rdp</a><a class="tag" href="/tags/ntlm/">#ntlm</a><a class="tag" href="/tags/python/">#python</a><a class="tag" href="/tags/recon/">#recon</a>
+</div>
+
+    <p class="desc">A passive RDP data extractor: pulling banners, TLS and NTLM details from a service without getting blocked.</p>
+  </div>
+</li>
+</ul>
+</section>
 
 
+</main>
+<footer class="foot">
+  <div class="wrap foot-in">
+    <span>© 2026 Alessandro Bresciani</span>
+    <ul class="social">
+  <li><a href="https://github.com/CyberRoute" rel="me noopener">github</a></li>
+  <li><a href="https://www.linkedin.com/in/alessandro-bresciani-35763610" rel="me noopener">linkedin</a></li>
+  <li><a href="mailto:cyberroute@proton.me">email</a></li>
+  <li><a href="/index.xml">rss</a></li>
+</ul>
 
+    <span class="muted">exit 0</span>
+  </div>
+</footer>
 
-
-
-
-
-
-    
-  </body>
+<script src="/js/main.js" defer></script>
+</body>
 </html>
-

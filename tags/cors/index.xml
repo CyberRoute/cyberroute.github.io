@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cors on cyberroute</title>
+    <link>https://cyberroute.github.io/tags/cors/</link>
+    <description>Recent content in Cors on cyberroute</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>cyberroute@proton.me (Alessandro Bresciani)</managingEditor>
+    <webMaster>cyberroute@proton.me (Alessandro Bresciani)</webMaster>
+    <lastBuildDate>Tue, 14 Oct 2025 10:10:31 +0200</lastBuildDate>
+    <atom:link href="https://cyberroute.github.io/tags/cors/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Exploiting CORS vulnerability with basic origin reflection</title>
+      <link>https://cyberroute.github.io/post/2025-10-14-cors/</link>
+      <pubDate>Tue, 14 Oct 2025 10:10:31 +0200</pubDate><author>cyberroute@proton.me (Alessandro Bresciani)</author>
+      <guid>https://cyberroute.github.io/post/2025-10-14-cors/</guid>
+      <description>Exploiting CORS Misconfigurations Introduction During a recent security assessment, I discovered a CORS (Cross-Origin Resource Sharing) misconfiguration that allowed complete bypass of the Same-Origin Policy. This vulnerability enabled an attacker to steal sensitive user information including API keys, email addresses, and session tokens from authenticated users.&#xA;In this guide, I&amp;rsquo;ll walk you through the complete exploitation process using PortSwigger&amp;rsquo;s Web Security Academy lab as a practical example.&#xA;Lab: CORS vulnerability with basic origin reflection</description>
+    </item>
+  </channel>
+</rss>
