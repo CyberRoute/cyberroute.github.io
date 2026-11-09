@@ -15,7 +15,7 @@
       <link>https://cyberroute.github.io/post/2025-12-11-localstack-hack/</link>
       <pubDate>Thu, 11 Dec 2025 10:10:12 +0200</pubDate><author>cyberroute@proton.me (Alessandro Bresciani)</author>
       <guid>https://cyberroute.github.io/post/2025-12-11-localstack-hack/</guid>
-      <description>CVE Identifiers CVE-2025-65200 - Remote Code Execution via XSS to CloudFormation Chain&#xA;CVE-2025-69723 - Reflected Cross-Site Scripting (XSS) Vulnerability&#xA;What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.&#xA;Because LocalStack runs on localhost and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a reflected XSS vulnerability.</description>
+      <description>CVE Identifiers Update (October 22, 2026): both CVEs are now published on the NVD.&#xA;CVE Description CVSS 3.1 CWE CVE-2025-65200 Remote Code Execution via XSS to CloudFormation Chain 9.6 Critical (AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H) CWE-79 CVE-2025-69723 Reflected Cross-Site Scripting (XSS) Vulnerability 6.1 Medium (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N) CWE-79 What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.</description>
     </item>
     <item>
       <title>Exploiting CORS vulnerability with basic origin reflection</title>

@@ -12,10 +12,8 @@
 
       <title>From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI - </title>
 
-  <meta name="description" content="CVE Identifiers CVE-2025-65200 - Remote Code Execution via XSS to CloudFormation Chain
-CVE-2025-69723 - Reflected Cross-Site Scripting (XSS) Vulnerability
-What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.
-Because LocalStack runs on localhost and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a reflected XSS vulnerability.">
+  <meta name="description" content="CVE Identifiers Update (October 22, 2026): both CVEs are now published on the NVD.
+CVE Description CVSS 3.1 CWE CVE-2025-65200 Remote Code Execution via XSS to CloudFormation Chain 9.6 Critical (AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H) CWE-79 CVE-2025-69723 Reflected Cross-Site Scripting (XSS) Vulnerability 6.1 Medium (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N) CWE-79 What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.">
   <meta name="author" content="Alessandro Bresciani"/><script type="application/ld+json">
 {
     "@context": "http://schema.org",
@@ -64,9 +62,9 @@ Because LocalStack runs on localhost and is marketed as a development-only tool,
     "name" : "Alessandro Bresciani"
   },
   "headline": "From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI",
-  "description" : "CVE Identifiers CVE-2025-65200 - Remote Code Execution via XSS to CloudFormation Chain\nCVE-2025-69723 - Reflected Cross-Site Scripting (XSS) Vulnerability\nWhat is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.\nBecause LocalStack runs on localhost and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a reflected XSS vulnerability.",
+  "description" : "CVE Identifiers Update (October 22, 2026): both CVEs are now published on the NVD.\nCVE Description CVSS 3.1 CWE CVE-2025-65200 Remote Code Execution via XSS to CloudFormation Chain 9.6 Critical (AV:N\/AC:L\/PR:N\/UI:R\/S:C\/C:H\/I:H\/A:H) CWE-79 CVE-2025-69723 Reflected Cross-Site Scripting (XSS) Vulnerability 6.1 Medium (AV:N\/AC:L\/PR:N\/UI:R\/S:C\/C:L\/I:L\/A:N) CWE-79 What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.",
   "inLanguage" : "en",
-  "wordCount":  2231 ,
+  "wordCount":  2264 ,
   "datePublished" : "2025-12-11T10:10:12",
   "dateModified" : "2025-12-11T10:10:12",
   "image" : "https:\/\/cyberroute.github.io\/img\/avatar-icon.png",
@@ -86,19 +84,16 @@ Because LocalStack runs on localhost and is marketed as a development-only tool,
 </script>
 
 <meta property="og:title" content="From Reflected XSS to Container RCE in LocalStack via CloudFormation Deploy UI" />
-<meta property="og:description" content="CVE Identifiers CVE-2025-65200 - Remote Code Execution via XSS to CloudFormation Chain
-CVE-2025-69723 - Reflected Cross-Site Scripting (XSS) Vulnerability
-What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.
-Because LocalStack runs on localhost and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a reflected XSS vulnerability.">
+<meta property="og:description" content="CVE Identifiers Update (October 22, 2026): both CVEs are now published on the NVD.
+CVE Description CVSS 3.1 CWE CVE-2025-65200 Remote Code Execution via XSS to CloudFormation Chain 9.6 Critical (AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H) CWE-79 CVE-2025-69723 Reflected Cross-Site Scripting (XSS) Vulnerability 6.1 Medium (AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N) CWE-79 What is LocalStack and how to quickly start it? LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.">
 <meta property="og:image" content="https://cyberroute.github.io/img/avatar-icon.png" />
 <meta property="og:url" content="https://cyberroute.github.io/post/2025-12-11-localstack-hack/" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Blog" />
 
   <meta name="twitter:title" content="From Reflected XSS to Container RCE in LocalStack via CloudFormation …" />
-  <meta name="twitter:description" content="CVE Identifiers CVE-2025-65200 - Remote Code Execution via XSS to CloudFormation Chain
-CVE-2025-69723 - Reflected Cross-Site Scripting (XSS) Vulnerability
-What is LocalStack and how to quickly start …">
+  <meta name="twitter:description" content="CVE Identifiers Update (October 22, 2026): both CVEs are now published on the NVD.
+CVE Description CVSS 3.1 CWE CVE-2025-65200 Remote Code Execution via XSS to CloudFormation Chain 9.6 Critical …">
   <meta name="twitter:image" content="https://cyberroute.github.io/img/avatar-icon.png" />
   <meta name="twitter:card" content="summary_large_image" />
   <link href='https://cyberroute.github.io/img/favicon.ico' rel='icon' type='image/x-icon'/>
@@ -331,8 +326,33 @@ What is LocalStack and how to quickly start …">
     <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
       <article role="main" class="blog-post">
         <h2 id="cve-identifiers">CVE Identifiers</h2>
-<p><strong>CVE-2025-65200</strong> - Remote Code Execution via XSS to CloudFormation Chain<br>
-<strong>CVE-2025-69723</strong> - Reflected Cross-Site Scripting (XSS) Vulnerability</p>
+<blockquote>
+<p><strong>Update (October 22, 2026):</strong> both CVEs are now published on the NVD.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>CVE</th>
+<th>Description</th>
+<th>CVSS 3.1</th>
+<th>CWE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-65200">CVE-2025-65200</a></td>
+<td>Remote Code Execution via XSS to CloudFormation Chain</td>
+<td><strong>9.6 Critical</strong> (<code>AV:N/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H</code>)</td>
+<td>CWE-79</td>
+</tr>
+<tr>
+<td><a href="https://nvd.nist.gov/vuln/detail/CVE-2025-69723">CVE-2025-69723</a></td>
+<td>Reflected Cross-Site Scripting (XSS) Vulnerability</td>
+<td><strong>6.1 Medium</strong> (<code>AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N</code>)</td>
+<td>CWE-79</td>
+</tr>
+</tbody>
+</table>
 <h1 id="what-is-localstack-and-how-to-quickly-start-it">What is LocalStack and how to quickly start it?</h1>
 <p>LocalStack is a popular open-source platform that emulates AWS services locally, allowing developers to build and test cloud infrastructure without touching real AWS accounts.</p>
 <p>Because LocalStack runs on <code>localhost</code> and is marketed as a development-only tool, its security surface is often underestimated. During a short exploration of LocalStack’s CloudFormation features, I discovered a broken deployment UI that led to a <strong>reflected XSS vulnerability</strong>. When combined with LocalStack’s permissive defaults, this XSS escalated to <strong>arbitrary code execution on the local container</strong>.</p>
@@ -775,7 +795,8 @@ That said, the research itself was fascinating, and I hope this write-up helps o
 <strong>October 24, 2025:</strong> Vendor silently removed vulnerable code via <a href="https://github.com/localstack/localstack/pull/13293/">PR #13293</a><br>
 <strong>December 11, 2025:</strong> Public disclosure (this writeup)<br>
 <strong>December 15, 2025:</strong> CVE-2025-65200 assigned by MITRE<br>
-<strong>February 12, 2026:</strong> CVE-2025-69723 assigned by MITRE (XSS component)</p>
+<strong>February 12, 2026:</strong> CVE-2025-69723 assigned by MITRE (XSS component)<br>
+<strong>October 22, 2026:</strong> <a href="https://nvd.nist.gov/vuln/detail/CVE-2025-65200">CVE-2025-65200</a> and <a href="https://nvd.nist.gov/vuln/detail/CVE-2025-69723">CVE-2025-69723</a> published on the NVD</p>
 <h1 id="affected-version">Affected Version</h1>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>localstack-core<span style="color:#f92672">==</span>4.9.2
 </span></span></code></pre></div><h1 id="acknowledgments">Acknowledgments</h1>
